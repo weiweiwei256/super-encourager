@@ -1,0 +1,81 @@
+{
+	"name": "super-encourage",
+	"displayName": "超级鼓励师",
+	"description": "可通过指定关键词通过搜索相关图片并展示，为努力工作的程序猿/媛带来些许轻松。",
+	"keywords": [
+		"鼓励",
+		"鼓励师",
+		"超级鼓励师",
+		"encourage",
+		"super encourage",
+		"super-encourage"
+	],
+	"version": "1.0.1",
+	"engines": {
+		"vscode": "^1.35.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:extension.superencourage"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Super Encourage",
+			"properties": {
+				"image-keywords": {
+					"type": "string",
+					"default": "邓紫棋",
+					"description": "搜索图片关键字"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "extension.superencourage",
+				"title": "call super encourage"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.superencourage",
+				"key": "ctrl+f9",
+				"mac": "cmd+f9",
+				"when": "editorTextFocus"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorFocus",
+					"command": "extension.superencourage",
+					"group": "navigation"
+				}
+			],
+			"editor/title": [
+				{
+					"when": "editorFocus",
+					"command": "extension.superencourage",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^10.12.21",
+		"eslint": "^5.13.0",
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28"
+	},
+	"dependencies": {
+		"mkdirp": "^0.5.1"
+	}
+}
