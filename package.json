@@ -1,5 +1,5 @@
 {
-	"name": "super-encourage",
+	"name": "super-encourager",
 	"displayName": "超级鼓励师",
 	"description": "可通过指定关键词通过搜索相关图片并展示，为努力工作的程序猿/媛带来些许轻松。",
 	"keywords": [
@@ -7,8 +7,8 @@
 		"鼓励师",
 		"超级鼓励师",
 		"encourage",
-		"super encourage",
-		"super-encourage"
+		"super encourager",
+		"super-encourager"
 	],
 	"version": "1.0.1",
 	"engines": {
@@ -18,13 +18,13 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.superencourage"
+		"onCommand:extension.superencourager"
 	],
-	"main": "./extension.js",
+	"main": "./src/extension.js",
 	"contributes": {
 		"configuration": {
 			"type": "object",
-			"title": "Super Encourage",
+			"title": "Super Encourager",
 			"properties": {
 				"image-keywords": {
 					"type": "string",
@@ -35,13 +35,13 @@
 		},
 		"commands": [
 			{
-				"command": "extension.superencourage",
-				"title": "call super encourage"
+				"command": "extension.superencourager",
+				"title": "call super encourager"
 			}
 		],
 		"keybindings": [
 			{
-				"command": "extension.superencourage",
+				"command": "extension.superencourager",
 				"key": "ctrl+f9",
 				"mac": "cmd+f9",
 				"when": "editorTextFocus"
@@ -51,14 +51,14 @@
 			"editor/context": [
 				{
 					"when": "editorFocus",
-					"command": "extension.superencourage",
+					"command": "extension.superencourager",
 					"group": "navigation"
 				}
 			],
 			"editor/title": [
 				{
 					"when": "editorFocus",
-					"command": "extension.superencourage",
+					"command": "extension.superencourager",
 					"group": "navigation"
 				}
 			]
