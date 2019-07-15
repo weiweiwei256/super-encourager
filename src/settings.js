@@ -1,4 +1,7 @@
-import { workspace, WorkspaceConfiguration } from "vscode";
-export function getSettings() {
-  return workspace.getConfiguration("Super Encourager");
+const vscode = require('vscode')
+exports.getSettings =function getSettings(key) {
+  return vscode.workspace.getConfiguration('superencourager').get(key);
+}
+exports.setSettings =function getSettings(key,value) {
+  return vscode.workspace.getConfiguration('superencourager').update(key,value,true);
 }

@@ -1,6 +1,7 @@
-import settings  from './settings.js'
 const vscode = require('vscode')
+const settings = require('./settings.js')
 const request = require('request')
+const syncRequest = require('sync-request')
 const fs = require('fs')
 const path = require('path')
 /**
@@ -19,11 +20,11 @@ function getExtensionFileVscodeResource(context, relativePath) {
  * @param {*} context 上下文
  * @param {*} templatePath 相对于插件根目录的html文件相对路径
  */
-function getWebViewContent(context, templatePath) {
-  const resourcePath = path.join(context.extensionPath, templatePath)
+function showEncourager(context) {
+  const resourcePath = path.join(context.extensionPath, '/index.html')
   const dirPath = path.dirname(resourcePath)
   let html = fs.readFileSync(resourcePath, 'utf-8')
-  html = html.replace('$image_path$','./resources/images/邓紫棋女神.jpeg')
+  html = html.replace('$image_path$', './images/邓紫棋.jpeg')
   // vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
   html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
     return (
@@ -36,27 +37,10 @@ function getWebViewContent(context, templatePath) {
   })
   return html
 }
-function showInfo(context) {
-  console.log(context)
-  console.log(vscode)
-  console.log(context.globalStoragePath)
-}
-function createFolder(to) { //文件写入
-  var sep = path.sep
-  console.log(sep)
-  var folders = path.dirname(to).split(sep);
-  var p = '';
-  while (folders.length) {
-      p += folders.shift() + sep;
-      if (!fs.existsSync(p)) {
-          fs.mkdirSync(p);
-      }
-  }
-};
-function loadImage(context) {
-  var keyword = encodeURI('邓紫棋')
-  var pn = 1
-  var url =
+function syncGetImageUrl() {
+  let keyword = encodeURI(settings.getSettings('keyword'))
+  let pn = 1
+  let url =
     'https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&ct=201326592&is=&fp=result&queryWord=' +
     keyword +
     '&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=0&word=' +
@@ -64,77 +48,85 @@ function loadImage(context) {
     '&s=&se=&tab=&width=&height=&face=0&istype=2&qc=&nc=1&fr=&pn=' +
     pn +
     '&rn=10'
-  request.get(url, {}, function(err, res, body) {
-    let pathResult = []
-    JSON.parse(body).data.forEach(item => {
-      if (!item.fromPageTitleEnc) {
-        return
-      }
-      pathResult.push({
+  let data = syncRequest('GET', url)
+  let imageUrl =[]
+   JSON.parse(data.getBody()).data.forEach(item => {
+    if (item.fromPageTitleEnc) {
+      imageUrl.push({
         url: item.thumbURL,
-        name:
-          item.fromPageTitleEnc.match(/[\u4e00-\u9fa5\w]+/g).join('') +
-          '.' +
-          item.type,
+        name: item.fromPageTitleEnc.match(/[\u4e00-\u9fa5\w]+/g).join('') + '.' + item.type,
       })
-    })
-    console.log('获取图片成功！')
-    pathResult.forEach(item =>{
-      let imagePath = path.join(context.extensionPath,'/resources/images/' + item.name)
-      console.log(imagePath)
-      request(item.url).pipe(fs.createWriteStream(imagePath))
-    })
-    console.log('图片下载中')
+    }
   })
+  return imageUrl
 }
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 
+function loadImage(context) {
+  let imageUrl = syncGetImageUrl()
+  console.log(imageUrl)
+  let imagePath = path.join(context.extensionPath, '/images/' + settings.getSettings('keyword'))
+  if (!fs.existsSync(imagePath)) {
+    // fs.mkdirSync(imagePath)
+    return
+  }
+  imageUrl.forEach(item => {
+    request(item.url).pipe(fs.createWriteStream('/' + imagePath + '/' + item.name))
+  })
+  return pathResult
+}
+function checkLocalImage(context) {
+  const localKeywordPath = path.join(
+    context.extensionPath,
+    '/images/',
+    settings.getSettings('keyword'),
+  )
+  if (!fs.existsSync(localKeywordPath)) {
+    vscode.window.showInformationMessage(
+      `本地不存在${settings.getSettings('keyword')}的相关图片,正在通过网络获取...`,
+    )
+    return []
+  }
+  let imageNames = fs.readdirSync(localKeywordPath)
+  return imageNames
+}
 /**
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-  // Use the console to output diagnostic information (console.log) and errors (console.error)
-  // This line of code will only be executed once when your extension is activated
-  console.log('Congratulations, your extension "super-encourager" is now active!')
-
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with  registerCommand
-  // The commandId parameter must match the command field in package.json
-  let disposable = vscode.commands.registerCommand('extension.superencourager', () => {
-    console.log(settings.getSettings());
-    // showInfo(context)
+  let call = vscode.commands.registerCommand('superencourager.call', () => {
+    // checkLocalImage(context)
     loadImage(context)
-    vscode.window.showInputBox().then((data)=>{
-      console.log(data)
-    },()=>{
-
-    })
-    // Display a message box to the user
-    vscode.window.showInformationMessage('super encourager is running!')
     const panel = vscode.window.createWebviewPanel(
       'testWebview', // viewType
       'come on!!!', // 视图标题
       vscode.ViewColumn.Two, // 显示在编辑器的哪个部位
       {
-        enableScripts: true, // 启用JS，默认禁用
-        retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
-      }
+        enableScripts: false, // 启用JS，默认禁用
+        retainContextWhenHidden: false, // webview被隐藏时保持状态，避免被重置
+      },
     )
 
-    panel.webview.html = getWebViewContent(context, '/index.html')
+    panel.webview.html = showEncourager(context)
 
     setTimeout(() => {
       panel.dispose()
     }, 10000)
   })
-
-  context.subscriptions.push(disposable)
+  let setKeyword = vscode.commands.registerCommand('superencourager.setKeyword', () => {
+    vscode.window.showInputBox().then(
+      data => {
+        console.log(data)
+        settings.setSettings('keyword', data)
+      },
+      () => {},
+    )
+  })
+  context.subscriptions.push(call)
+  context.subscriptions.push(setKeyword)
 }
 
 exports.activate = activate
 
-// this method is called when your extension is deactivated
 function deactivate() {}
 
 module.exports = {
