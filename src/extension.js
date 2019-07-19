@@ -4,6 +4,8 @@ const axios = require('axios')
 const syncRequest = require('sync-request')
 const fs = require('fs')
 const path = require('path')
+const CronJob = require('cron').CronJob
+let timeMeter = null // 计时器
 function showEncourager(context, imageNames) {
   let i = Math.floor(Math.random() * imageNames.length)
   let name = imageNames[i]
@@ -33,10 +35,12 @@ function showEncourager(context, imageNames) {
     )
   })
   panel.webview.html = html
-
-  setTimeout(() => {
-    panel.dispose()
-  }, 5000)
+  if (settings.getSettings('timeLast') !== 0) {
+    // 值为0 则不自动关闭
+    setTimeout(() => {
+      panel.dispose()
+    }, settings.getSettings('timeLast') * 1000)
+  }
 }
 // 同步获取图片路径
 function syncGetImageUrl(offset) {
@@ -62,9 +66,14 @@ function syncGetImageUrl(offset) {
   return imageUrl
 }
 
-function loadImage(context, offset) {
+function loadImage(context, localIamge = []) {
   return new Promise((resolve, reject) => {
-    let imageUrl = syncGetImageUrl(offset)
+    if (localIamge.length >= settings.getSettings('maxImageNum')) {
+      console.log('已达到最大图片数量，不再更新获取新的图片！')
+      resolve(localIamge)
+      return;
+    }
+    let imageUrl = syncGetImageUrl(localIamge.length)
     console.log('load image:' + settings.getSettings('keyword'))
     let imagePath = path.join(context.extensionPath, '/images/' + settings.getSettings('keyword'))
     console.log(imagePath)
@@ -100,22 +109,42 @@ function checkLocalImage(context) {
   let imageNames = fs.readdirSync(localKeywordPath)
   return imageNames
 }
-/**
- * @param {vscode.ExtensionContext} context
- */
+
+function main(context) {
+  let localImages = checkLocalImage(context)
+  if (localImages.length === 0) {
+    loadImage(context).then(newImages => {
+      showEncourager(context, newImages)
+    })
+  } else {
+    loadImage(context, localImages)
+    showEncourager(context, localImages)
+  }
+}
 function activate(context) {
   let call = vscode.commands.registerCommand('superencourager.call', () => {
-    // 1.0 检测本地图片
-    let localImages = checkLocalImage(context)
-    console.log(localImages)
-    if (localImages.length === 0) {
-      loadImage(context, localImages.length).then(newImages => {
-        console.log('load image success')
-        showEncourager(context, newImages)
-      })
-    } else {
-      loadImage(context, localImages.length)
-      showEncourager(context, localImages)
+    try {
+      main(context)
+      if (!timeMeter) {
+        let timeSetting
+        if (settings.getSettings('type') === 'time-interval') {
+          timeSetting = '* */' + settings.getSettings('timeInterval') + ' * * * *'
+        } else if (settings.getSettings('type') === 'natural-hour') {
+          timeSetting = '00 00 * * * *'
+        } else if (settings.getSettings('type') === 'natural-half-hour') {
+          timeSetting = '00 00,30 * * * *'
+        }
+        timeMeter = new CronJob(
+          timeSetting,
+          function() {
+            main(context)
+          },
+          null,
+          true,
+        )
+      }
+    } catch (e) {
+      console.error(e)
     }
   })
   let setKeyword = vscode.commands.registerCommand('superencourager.setKeyword', () => {

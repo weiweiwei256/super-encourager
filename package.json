@@ -33,16 +33,46 @@
           "scope": "application",
           "description": "搜索图片关键字"
         },
+        "superencourager.timeLast": {
+          "type": "number",
+          "default": "3",
+          "scope": "application",
+          "description": "鼓励时间持续时间，单位:秒。 设置为0 则不自动关闭"
+        },
+        "superencourager.timeInterval": {
+          "type": "number",
+          "default": "1",
+          "scope": "application",
+          "description": "鼓励时间间隔，单位分钟。需要：鼓励方式为：time-interval时，生效"
+        },
         "superencourager.type": {
           "type": "string",
           "enum": [
-            "30min-interval",
+            "time-interval",
             "natural-hour",
             "natural-half-hour"
           ],
-          "default": "30min-interval",
+          "default": "natural-hour",
           "scope": "application",
-          "description": "鼓励方式: 每30分钟间隔、整点鼓励、半点鼓励。"
+          "description": "鼓励方式: 特定时间间隔、整点鼓励、半点鼓励。"
+        },
+        "superencourager.maxImageNum": {
+          "type": "number",
+          "default": "5",
+          "scope": "application",
+          "description": "每个关键字的图片数量"
+        },
+        "superencourager.isJPG": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "是否获取动图"
+        },
+        "superencourager.isHighQuality": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "description": "是否获取高清图"
         }
       }
     },
@@ -89,6 +119,7 @@
     "@types/mocha": "^2.2.42",
     "@types/node": "^10.12.21",
     "axios": "^0.19.0",
+    "cron": "^1.7.1",
     "eslint": "^5.13.0",
     "sync-request": "^6.1.0",
     "typescript": "^3.3.1",
