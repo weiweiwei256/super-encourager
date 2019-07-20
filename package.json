@@ -19,7 +19,9 @@
   ],
   "activationEvents": [
     "onCommand:superencourager.call",
-    "onCommand:superencourager.setKeyword"
+    "onCommand:superencourager.setKeyword",
+    "onCommand:superencourager.clearImage",
+    "onCommand:superencourager.showPath"
   ],
   "main": "./src/extension.js",
   "contributes": {
@@ -61,18 +63,6 @@
           "default": "5",
           "scope": "application",
           "description": "每个关键字的图片数量"
-        },
-        "superencourager.isJPG": {
-          "type": "boolean",
-          "default": true,
-          "scope": "application",
-          "description": "是否获取动图"
-        },
-        "superencourager.isHighQuality": {
-          "type": "boolean",
-          "default": true,
-          "scope": "application",
-          "description": "是否获取高清图"
         }
       }
     },

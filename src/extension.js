@@ -45,14 +45,21 @@ function showEncourager(context, imageNames) {
 // 同步获取图片路径
 function syncGetImageUrl(offset) {
   let keyword = encodeURI(settings.getSettings('keyword'))
+  // 控制下载数量
+  let standNum = Math.floor(settings.getSettings('maxImageNum') / 5) // 标准是5次下载完成
+  // 极值处理
+  let downloadNum = standNum < 10 ? 10 : standNum  
+   downloadNum = standNum > 30 ? 30 : standNum
   let url =
     'https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&ct=201326592&is=&fp=result&queryWord=' +
     keyword +
     '&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=0&word=' +
     keyword +
-    '&s=&se=&tab=&width=&height=&face=0&istype=2&qc=&nc=1&fr=&pn=' +
+    '&s=&se=&tab=&width=&height=&face=0&istype=2&qc=&nc=1&hd=1&fr=&pn=' +
     offset +
-    '&rn=2'
+    '&rn=' +
+    downloadNum
+  //
   let data = syncRequest('GET', url)
   let imageUrl = []
   JSON.parse(data.getBody()).data.forEach(item => {
@@ -71,7 +78,7 @@ function loadImage(context, localIamge = []) {
     if (localIamge.length >= settings.getSettings('maxImageNum')) {
       console.log('已达到最大图片数量，不再更新获取新的图片！')
       resolve(localIamge)
-      return;
+      return
     }
     let imageUrl = syncGetImageUrl(localIamge.length)
     console.log('load image:' + settings.getSettings('keyword'))
