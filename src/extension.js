@@ -48,8 +48,8 @@ function syncGetImageUrl(offset) {
   // 控制下载数量
   let standNum = Math.floor(settings.getSettings('maxImageNum') / 5) // 标准是5次下载完成
   // 极值处理
-  let downloadNum = standNum < 10 ? 10 : standNum  
-   downloadNum = standNum > 30 ? 30 : standNum
+  let downloadNum = standNum < 10 ? 10 : standNum
+  downloadNum = standNum > 30 ? 30 : standNum
   let url =
     'https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&ct=201326592&is=&fp=result&queryWord=' +
     keyword +
@@ -100,7 +100,36 @@ function loadImage(context, localIamge = []) {
     })
   })
 }
-
+function getImageRootPath(context) {
+  return path.join(context.extensionPath, '/images/')
+}
+function delPath(path) {
+  if (path.indexOf('./') !== 0 || path.indexOf('../') !== 0) {
+    return '为了安全仅限制使用相对定位..'
+  }
+  if (!fs.existsSync(path)) {
+    console.log('路径不存在')
+    return '路径不存在'
+  }
+  let info = fs.statSync(path)
+  if (info.isDirectory()) {
+    //目录
+    let data = fs.readdirSync(path)
+    if (data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        delPath(`${path}/${data[i]}`) //使用递归
+        if (i == data.length - 1) {
+          //删了目录里的内容就删掉这个目录
+          delPath(`${path}`)
+        }
+      }
+    } else {
+      fs.rmdirSync(path) //删除空目录
+    }
+  } else if (info.isFile()) {
+    fs.unlinkSync(path) //删除文件
+  }
+}
 function checkLocalImage(context) {
   const localKeywordPath = path.join(
     context.extensionPath,
@@ -163,8 +192,29 @@ function activate(context) {
       () => {},
     )
   })
+  let clearImage = vscode.commands.registerCommand('superencourager.clearImage', () => {
+    let keywordFolder = fs.readdirSync(getImageRootPath(context))
+    let keywords = ['全部']
+    keywordFolder.forEach(item => {
+      if (item !== '.DS_Store') {
+        keywords.push(item)
+      }
+    })
+
+    vscode.window.showQuickPick(keywords).then(
+      data => {
+        console.log(data)
+      },
+      () => {},
+    )
+  })
+  let showPath = vscode.commands.registerCommand('superencourager.showPath', () => {
+    vscode.window.showInformationMessage('超级鼓励师本地资源路径：' + getImageRootPath(context))
+  })
   context.subscriptions.push(call)
   context.subscriptions.push(setKeyword)
+  context.subscriptions.push(clearImage)
+  context.subscriptions.push(showPath)
 }
 
 exports.activate = activate

@@ -73,8 +73,17 @@
       },
       {
         "command": "superencourager.setKeyword",
-        "title": "set:设置超级鼓励师搜索关键字"
+        "title": "设置超级鼓励师搜索关键字"
+      },
+      {
+        "command": "superencourager.clearImage",
+        "title": "清空级鼓励师图片"
+      },
+      {
+        "command": "superencourager.showPath",
+        "title": "查看超级鼓励师图片路径"
       }
+
     ],
     "keybindings": [
       {
