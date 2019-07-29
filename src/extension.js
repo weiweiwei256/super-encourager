@@ -161,6 +161,15 @@ function activate(context) {
   let call = vscode.commands.registerCommand('superencourager.call', () => {
     try {
       main(context)
+      vscode.workspace.onDidChangeConfiguration(function(event) {
+        const configList = ['superencourager.keyword'];
+        // affectsConfiguration: 判断是否变更了指定配置项
+        const affected = configList.some(item => event.affectsConfiguration(item));
+        if (affected) {
+          // do some thing ...
+          console.log(affected)
+        }
+      });
       if (!timeMeter) {
         let timeSetting
         if (settings.getSettings('type') === 'time-interval') {
