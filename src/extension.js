@@ -6,11 +6,12 @@ const fs = require('fs')
 const path = require('path')
 const CronJob = require('cron').CronJob
 let timeMeter = null // 计时器
+let out = null // 终端输出对象
 function showEncourager(context, imageNames) {
   let i = Math.floor(Math.random() * imageNames.length)
   let name = imageNames[i]
   let imagePath = `./images/${settings.getSettings('keyword')}/${name}`
-  console.log(imagePath)
+  log(imagePath)
   const panel = vscode.window.createWebviewPanel(
     'testWebview', // viewType
     'come on!!!', // 视图标题
@@ -76,14 +77,14 @@ function syncGetImageUrl(offset) {
 function loadImage(context, localIamge = []) {
   return new Promise((resolve, reject) => {
     if (localIamge.length >= settings.getSettings('maxImageNum')) {
-      console.log('已达到最大图片数量，不再更新获取新的图片！')
+      log('已达到最大图片数量，不再更新获取新的图片！')
       resolve(localIamge)
       return
     }
     let imageUrl = syncGetImageUrl(localIamge.length)
-    console.log('load image:' + settings.getSettings('keyword'))
+    log('load image:' + settings.getSettings('keyword'))
     let imagePath = path.join(context.extensionPath, '/images/' + settings.getSettings('keyword'))
-    console.log(imagePath)
+    log(imagePath)
     if (!fs.existsSync(imagePath)) {
       fs.mkdirSync(imagePath)
     }
@@ -103,12 +104,11 @@ function loadImage(context, localIamge = []) {
 function getImageRootPath(context) {
   return path.join(context.extensionPath, '/images/')
 }
-function delPath(path) {
-  if (path.indexOf('./') !== 0 || path.indexOf('../') !== 0) {
-    return '为了安全仅限制使用相对定位..'
-  }
+function delImages(folderName) {
+  let imagePath = path.join(context.extensionPath, '/images/' + folderName)
+  log(imagePath)
   if (!fs.existsSync(path)) {
-    console.log('路径不存在')
+    log('路径不存在')
     return '路径不存在'
   }
   let info = fs.statSync(path)
@@ -117,7 +117,7 @@ function delPath(path) {
     let data = fs.readdirSync(path)
     if (data.length > 0) {
       for (let i = 0; i < data.length; i++) {
-        delPath(`${path}/${data[i]}`) //使用递归
+        delPath(`${imagePath}/${data[i]}`) //使用递归
         if (i == data.length - 1) {
           //删了目录里的内容就删掉这个目录
           delPath(`${path}`)
@@ -157,19 +157,26 @@ function main(context) {
     showEncourager(context, localImages)
   }
 }
+function log(msg) {
+  if (!out) {
+    out = vscode.window.createOutputChannel('super encourager')
+    out.show()
+  }
+  out.appendLine(msg)
+}
 function activate(context) {
   let call = vscode.commands.registerCommand('superencourager.call', () => {
     try {
       main(context)
       vscode.workspace.onDidChangeConfiguration(function(event) {
-        const configList = ['superencourager.keyword'];
+        const configList = ['superencourager.keyword']
         // affectsConfiguration: 判断是否变更了指定配置项
-        const affected = configList.some(item => event.affectsConfiguration(item));
+        const affected = configList.some(item => event.affectsConfiguration(item))
         if (affected) {
           // do some thing ...
-          console.log(affected)
+          log(affected)
         }
-      });
+      })
       if (!timeMeter) {
         let timeSetting
         if (settings.getSettings('type') === 'time-interval') {
@@ -212,7 +219,7 @@ function activate(context) {
 
     vscode.window.showQuickPick(keywords).then(
       data => {
-        console.log(data)
+        log(data)
       },
       () => {},
     )
