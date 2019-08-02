@@ -1,7 +1,7 @@
 
-var n = /(_z2C\$q|_z&e3B|AzdH3F)/g;
-var t = /([a-w\d])/g;
-var e = {
+let n = /(_z2C\$q|_z&e3B|AzdH3F)/g;
+let t = /([a-w\d])/g;
+let e = {
   w: "a",
   k: "b",
   v: "c",
@@ -39,19 +39,12 @@ var e = {
   "_z&e3B": ".",
   AzdH3F: "/"
 };
-function uncompile(r) {
-  console.log(r);
-  var o = r.replace(n, function(t, n) {
-    console.log(t);
+let uncompile =function (r) {
+  let o = r.replace(n, function(t, n) {
     return e[n];
   });
-  console.log(o);
   return o.replace(t, function(t, n) {
     return e[n];
   });
-}
-console.log(
-  uncompile(
-    "ippr_z2C$qAzdH3FAzdH3Fr_z&e3Bffs_z&e3Bqit42_z&e3Bv54AzdH3Fpa8cn1bl9j1bdknujb8_z&e3B3r2"
-  )
-);
+};
+exports.uncompile = uncompile;

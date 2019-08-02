@@ -5,13 +5,13 @@ const syncRequest = require('sync-request')
 const fs = require('fs')
 const path = require('path')
 const CronJob = require('cron').CronJob
+const { uncompile } = require('./util.js')
 let timeMeter = null // 计时器
 let out = null // 终端输出对象
 function showEncourager(context, imageNames) {
   let i = Math.floor(Math.random() * imageNames.length)
   let name = imageNames[i]
   let imagePath = `./images/${settings.getSettings('keyword')}/${name}`
-  log(imagePath)
   const panel = vscode.window.createWebviewPanel(
     'testWebview', // viewType
     'come on!!!', // 视图标题
@@ -46,27 +46,34 @@ function showEncourager(context, imageNames) {
 // 同步获取图片路径
 function syncGetImageUrl(offset) {
   let keyword = encodeURI(settings.getSettings('keyword'))
+  let lm = settings.getSettings('isGif') ? 6 : 1
   // 控制下载数量
   let standNum = Math.floor(settings.getSettings('maxImageNum') / 5) // 标准是5次下载完成
   // 极值处理
-  let downloadNum = standNum < 10 ? 10 : standNum
-  downloadNum = standNum > 30 ? 30 : standNum
+  let downloadNum = standNum
+  if (standNum < 10) {
+    downloadNum = 10
+  } else if (standNum > 30) {
+    downloadNum = 30
+  }
   let url =
     'https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&ct=201326592&is=&fp=result&queryWord=' +
     keyword +
-    '&cl=2&lm=6&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=0&word=' +
+    '&cl=2&ie=utf-8&oe=utf-8&adpicid=&st=-1&z=&ic=0&word=' +
     keyword +
     '&s=&se=&tab=&width=&height=&face=0&istype=2&qc=&nc=1&hd=1&fr=&pn=' +
     offset +
     '&rn=' +
-    downloadNum
+    downloadNum +
+    '&lm=' +
+    lm
   //
   let data = syncRequest('GET', url)
   let imageUrl = []
   JSON.parse(data.getBody()).data.forEach(item => {
     if (item.fromPageTitleEnc) {
       imageUrl.push({
-        url: item.thumbURL,
+        url: uncompile(item.objURL),
         name: item.fromPageTitleEnc.match(/[\u4e00-\u9fa5\w]+/g).join('') + '.' + item.type,
       })
     }
@@ -82,7 +89,7 @@ function loadImage(context, localIamge = []) {
       return
     }
     let imageUrl = syncGetImageUrl(localIamge.length)
-    log('load image:' + settings.getSettings('keyword'))
+    log('下载:' + settings.getSettings('keyword') + ' 相关图片')
     let imagePath = path.join(context.extensionPath, '/images/' + settings.getSettings('keyword'))
     log(imagePath)
     if (!fs.existsSync(imagePath)) {
@@ -104,30 +111,28 @@ function loadImage(context, localIamge = []) {
 function getImageRootPath(context) {
   return path.join(context.extensionPath, '/images/')
 }
-function delImages(folderName) {
-  let imagePath = path.join(context.extensionPath, '/images/' + folderName)
-  log(imagePath)
-  if (!fs.existsSync(path)) {
+function delImages(imagePath, context) {
+  if (!fs.existsSync(imagePath)) {
     log('路径不存在')
     return '路径不存在'
   }
-  let info = fs.statSync(path)
+  let info = fs.statSync(imagePath)
   if (info.isDirectory()) {
     //目录
-    let data = fs.readdirSync(path)
+    let data = fs.readdirSync(imagePath)
     if (data.length > 0) {
       for (let i = 0; i < data.length; i++) {
-        delPath(`${imagePath}/${data[i]}`) //使用递归
+        delImages(`${imagePath}/${data[i]}`, context) //使用递归
         if (i == data.length - 1) {
           //删了目录里的内容就删掉这个目录
-          delPath(`${path}`)
+          delImages(`${imagePath}`)
         }
       }
     } else {
-      fs.rmdirSync(path) //删除空目录
+      fs.rmdirSync(imagePath) //删除空目录
     }
   } else if (info.isFile()) {
-    fs.unlinkSync(path) //删除文件
+    fs.unlinkSync(imagePath) //删除文件
   }
 }
 function checkLocalImage(context) {
@@ -169,13 +174,16 @@ function activate(context) {
     try {
       main(context)
       vscode.workspace.onDidChangeConfiguration(function(event) {
-        const configList = ['superencourager.keyword']
-        // affectsConfiguration: 判断是否变更了指定配置项
-        const affected = configList.some(item => event.affectsConfiguration(item))
-        if (affected) {
-          // do some thing ...
-          log(affected)
-        }
+        Promise.resolve(event.affectsConfiguration('superencourager.isGif')).then(data => {
+          if (data) {
+            //true 代表这个属性已经被修改
+            //修改图片状态后 清空已下载图片
+            delImages(
+              path.join(context.extensionPath, '/images/' + settings.getSettings('keyword')),
+              context,
+            )
+          }
+        })
       })
       if (!timeMeter) {
         let timeSetting
