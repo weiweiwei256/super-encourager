@@ -51,7 +51,7 @@
           "type": "boolean",
           "default": false,
           "scope": "application",
-          "description": "是否搜索动图，注意修改状态后之前下载的图片会被情况"
+          "description": "是否搜索动图"
         },
         "superencourager.type": {
           "type": "string",

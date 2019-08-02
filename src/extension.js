@@ -177,11 +177,11 @@ function activate(context) {
         Promise.resolve(event.affectsConfiguration('superencourager.isGif')).then(data => {
           if (data) {
             //true 代表这个属性已经被修改
-            //修改图片状态后 清空已下载图片
-            delImages(
-              path.join(context.extensionPath, '/images/' + settings.getSettings('keyword')),
-              context,
-            )
+            // TODO: 创建  关键字_动图文件夹
+            // delImages(
+            //   path.join(context.extensionPath, '/images/' + settings.getSettings('keyword')),
+            //   context,
+            // )
           }
         })
       })
