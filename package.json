@@ -51,7 +51,7 @@
           "type": "boolean",
           "default": false,
           "scope": "application",
-          "description": "是否搜索动图"
+          "description": "是否获取动图,PS：有可能不准确，但也没啥办法"
         },
         "superencourager.type": {
           "type": "string",
@@ -75,19 +75,23 @@
     "commands": [
       {
         "command": "superencourager.call",
-        "title": "call:召唤超级鼓励师"
+        "title": "super.call:召唤超级鼓励师"
       },
       {
         "command": "superencourager.setKeyword",
-        "title": "设置超级鼓励师搜索关键字"
+        "title": "super.set:设置搜索关键字"
+      },
+      {
+        "command": "superencourager.switchKeyword",
+        "title": "super.switch:切换关键字"
       },
       {
         "command": "superencourager.clearImage",
-        "title": "清空级鼓励师图片"
+        "title": "super.clear:删除关键字"
       },
       {
         "command": "superencourager.showPath",
-        "title": "查看超级鼓励师图片路径"
+        "title": "super.showPath:查看图片路径"
       }
 
     ],
