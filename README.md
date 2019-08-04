@@ -1,65 +1,50 @@
-# super-encourage README
+# 超级鼓励师 README
 
-This is the README for your extension "super-encourage". After writing up a brief description, we recommend including the following sections.
+参考其他鼓励师的思路，并扩展相关功能，增强鼓励效果
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- 基于百度图片搜索，根据用户设置的关键字进行个性化搜索，提供你的最爱。
+- 不仅支持特定时间间隔召唤，还支持自然时间（暂时支持：半点，整点）召唤。
+- 简单快捷的关键字管理。
+- 支持百度动图搜索，但是搜索有可能存在不准的情况。
+- 支持查看本地图片。
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+"vscode": "^1.35.0"
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- superencourager.keyword: 搜索图片关键字
+- superencourager.timeLast: 鼓励持续时间设置
+- superencourager.timeInterval: 鼓励时间间隔
+- superencourager.isGif:是否获取动图
+- superencourager.type:鼓励方式
+- superencourager.maxImageNum: 每个关键字的最大图片数量
 
-For example:
+## Extension Commands
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- super.call:召唤超级鼓励师
+- super.set:设置搜索关键字
+- super.switch:切换关键字
+- super.clear:删除关键字
+- super.showPath:查看图片本地路径
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
 ### 1.0.1
 
-Fixed issue #.
+超级鼓励师 init
 
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
+---
 
 ## Working with Markdown
 
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
+**Note:** 开源公益不易,star 一波吧：P
 
 ### For more information
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- [github 源码地址](https://github.com/weiweiwei256/super-encourager)
 
 **Enjoy!**
