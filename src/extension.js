@@ -87,7 +87,6 @@ function main(context) {
 function activate(context) {
   let call = vscode.commands.registerCommand('superencourager.call', () => {
     try {
-      getImageRootPath()
       main(context)
       initTimer(context)
       vscode.workspace.onDidChangeConfiguration(function(event) {

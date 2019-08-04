@@ -62,9 +62,9 @@ exports.uncompile = function(r) {
 exports.getImageRootPath = getImageRootPath
 exports.getImagePath = function() {
   if (!getSettings('isGif')) {
-    return getImageRootPath() + '/' + getSettings('keyword')
+    return getImageRootPath() + getSettings('keyword')
   } else {
-    return getImageRootPath() + '/' + getSettings('keyword') + GIF_SUFFIX
+    return getImageRootPath() + getSettings('keyword') + GIF_SUFFIX
   }
 }
 exports.log = function(msg) {
@@ -78,7 +78,7 @@ exports.getKeywords = function() {
   let keywordFolder = fs.readdirSync(getImageRootPath())
   let keywords = new Set()
   keywordFolder.forEach(item => {
-    if (item !== '.DS_Store') {
+    if (item !== '.DS_Store' && item !== '.gitkeep') {
       if (item.endsWith(GIF_SUFFIX)) {
         keywords.add(item.substring(0, item.indexOf(GIF_SUFFIX)))
       } else {
