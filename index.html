@@ -8,7 +8,12 @@
   </head>
   <body>
     <p>欣赏张美图休息一下吧！！！</p>
-    <img id='imageId' src="$image_path$" />
+    <img id="imageId" src="$image_path$" />
+    <p>当前时间：<span id="time"></span></p>
   </body>
-
+  <script>
+    var d = new Date()
+    document.getElementById('time').textContent =
+      d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
+  </script>
 </html>

@@ -20,6 +20,7 @@
   "activationEvents": [
     "onCommand:superencourager.call",
     "onCommand:superencourager.setKeyword",
+    "onCommand:superencourager.switchKeyword",
     "onCommand:superencourager.clearImage",
     "onCommand:superencourager.showPath"
   ],
@@ -37,13 +38,13 @@
         },
         "superencourager.timeLast": {
           "type": "number",
-          "default": "3",
+          "default": "5",
           "scope": "application",
           "description": "鼓励时间持续时间，单位:秒。 设置为0 则不自动关闭"
         },
         "superencourager.timeInterval": {
           "type": "number",
-          "default": "1",
+          "default": "30",
           "scope": "application",
           "description": "鼓励时间间隔，单位分钟。需要：鼓励方式为：time-interval时，生效"
         },
@@ -51,7 +52,7 @@
           "type": "boolean",
           "default": false,
           "scope": "application",
-          "description": "是否获取动图,PS：有可能不准确，但也没啥办法"
+          "description": "是否获取动图,通过百度搜索高清动图可能不准确，但也没啥办法"
         },
         "superencourager.type": {
           "type": "string",
@@ -66,7 +67,7 @@
         },
         "superencourager.maxImageNum": {
           "type": "number",
-          "default": "5",
+          "default": "30",
           "scope": "application",
           "description": "每个关键字的图片数量"
         }
@@ -91,7 +92,7 @@
       },
       {
         "command": "superencourager.showPath",
-        "title": "super.showPath:查看图片路径"
+        "title": "super.showPath:查看图片本地路径"
       }
 
     ],

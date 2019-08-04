@@ -1,5 +1,5 @@
 const vscode = require('vscode')
-const settings = require('./settings.js')
+const { getSettings, setSettings } = require('./settings.js')
 const axios = require('axios')
 const syncRequest = require('sync-request')
 const fs = require('fs')
@@ -14,19 +14,19 @@ function showEncourager(context, imageNames) {
   if (imageNames.length === 0) {
     return
   }
-  let i = Math.floor(Math.random() * imageNames.length)
+  let i = Math.floor(Math.random(20180804) * imageNames.length)
   let name = imageNames[i]
-  let folderName = settings.getSettings('keyword')
-  if (settings.getSettings('isGif')) {
+  let folderName = getSettings('keyword')
+  if (getSettings('isGif')) {
     folderName += GIF_SUFFIX
   }
   let imagePath = `./images/${folderName}/${name}`
-  const panel = vscode.window.createWebviewPanel(
-    'testWebview', // viewType
+  let panel = vscode.window.createWebviewPanel(
+    name, // viewType
     'come on!!!', // 视图标题
     vscode.ViewColumn.Two, // 显示在编辑器的哪个部位
     {
-      enableScripts: false, // 启用JS，默认禁用
+      enableScripts: true, // 启用JS，默认禁用
       retainContextWhenHidden: false, // webview被隐藏时保持状态，避免被重置
     },
   )
@@ -45,19 +45,19 @@ function showEncourager(context, imageNames) {
     )
   })
   panel.webview.html = html
-  if (settings.getSettings('timeLast') !== 0) {
+  if (getSettings('timeLast') !== 0) {
     // 值为0 则不自动关闭
     setTimeout(() => {
       panel.dispose()
-    }, settings.getSettings('timeLast') * 1000)
+    }, getSettings('timeLast') * 1000)
   }
 }
 // 同步获取图片路径
 function syncGetImageUrl(offset) {
-  let keyword = encodeURI(settings.getSettings('keyword'))
-  let lm = settings.getSettings('isGif') ? 6 : 1
+  let keyword = encodeURI(getSettings('keyword'))
+  let lm = getSettings('isGif') ? 6 : 1
   // 控制下载数量
-  let standNum = Math.floor(settings.getSettings('maxImageNum') / 5) // 标准是5次下载完成
+  let standNum = Math.floor(getSettings('maxImageNum') / 5) // 标准是5次下载完成
   // 极值处理
   let downloadNum = standNum
   if (standNum < 10) {
@@ -65,6 +65,7 @@ function syncGetImageUrl(offset) {
   } else if (standNum > 30) {
     downloadNum = 30
   }
+  log('下载数量为：' + downloadNum)
   let url =
     'https://image.baidu.com/search/acjson?tn=resultjson_com&ipn=rj&ct=201326592&is=&fp=result&queryWord=' +
     keyword +
@@ -79,11 +80,11 @@ function syncGetImageUrl(offset) {
   //
   let data = syncRequest('GET', url)
   let imageUrl = []
-  JSON.parse(data.getBody()).data.forEach(item => {
+  JSON.parse(data.getBody()).data.forEach((item, index) => {
     if (item.fromPageTitleEnc) {
       imageUrl.push({
         url: uncompile(item.objURL),
-        name: item.fromPageTitleEnc.match(/[\u4e00-\u9fa5\w]+/g).join('') + '.' + item.type,
+        name: `${getSettings('keyword')}_${offset + index}.${item.type}`,
       })
     }
   })
@@ -92,13 +93,13 @@ function syncGetImageUrl(offset) {
 
 function loadImage(context, localIamge = []) {
   return new Promise((resolve, reject) => {
-    if (localIamge.length >= settings.getSettings('maxImageNum')) {
+    if (localIamge.length >= getSettings('maxImageNum')) {
       log('已达到最大图片数量，不再更新获取新的图片！')
       resolve(localIamge)
       return
     }
     let imageUrl = syncGetImageUrl(localIamge.length)
-    log('下载:' + settings.getSettings('keyword') + ' 相关图片')
+    log('下载:' + getSettings('keyword') + ' 相关图片')
     let imagePath = getCurrentPath(context)
     if (!fs.existsSync(imagePath)) {
       fs.mkdirSync(imagePath)
@@ -107,6 +108,7 @@ function loadImage(context, localIamge = []) {
     imageUrl.forEach(item => {
       requestImage.push(
         axios.get(item.url, { responseType: 'arraybuffer' }).then(data => {
+          log('保存图片：' + imagePath + '/' + item.name)
           fs.writeFileSync(imagePath + '/' + item.name, data.data)
         }),
       )
@@ -119,7 +121,7 @@ function loadImage(context, localIamge = []) {
 function getImageRootPath(context) {
   return path.join(context.extensionPath, '/images/')
 }
-function delImages(imagePath, context) {
+function delImages(imagePath) {
   if (!fs.existsSync(imagePath)) {
     log('路径不存在')
     return '路径不存在'
@@ -130,7 +132,7 @@ function delImages(imagePath, context) {
     let data = fs.readdirSync(imagePath)
     if (data.length > 0) {
       for (let i = 0; i < data.length; i++) {
-        delImages(`${imagePath}/${data[i]}`, context) //使用递归
+        delImages(`${imagePath}/${data[i]}`) //使用递归
         if (i == data.length - 1) {
           //删了目录里的内容就删掉这个目录
           delImages(`${imagePath}`)
@@ -144,14 +146,10 @@ function delImages(imagePath, context) {
   }
 }
 function getCurrentPath(context) {
-  if (!settings.getSettings('isGif')) {
-    return path.join(context.extensionPath, '/images/', settings.getSettings('keyword'))
+  if (!getSettings('isGif')) {
+    return path.join(context.extensionPath, '/images/', getSettings('keyword'))
   } else {
-    return path.join(
-      context.extensionPath,
-      '/images/',
-      settings.getSettings('keyword') + GIF_SUFFIX,
-    )
+    return path.join(context.extensionPath, '/images/', getSettings('keyword') + GIF_SUFFIX)
   }
 }
 function getKeywords(context) {
@@ -160,7 +158,7 @@ function getKeywords(context) {
   keywordFolder.forEach(item => {
     if (item !== '.DS_Store') {
       if (item.endsWith(GIF_SUFFIX)) {
-        console.log(item.substring(0, item.indexOf(GIF_SUFFIX)))
+        keywords.add(item.substring(0, item.indexOf(GIF_SUFFIX)))
       } else {
         keywords.add(item)
       }
@@ -173,7 +171,7 @@ function checkLocalImage(context) {
   const localKeywordPath = getCurrentPath(context)
   if (!fs.existsSync(localKeywordPath)) {
     vscode.window.showInformationMessage(
-      `本地不存在${settings.getSettings('keyword')}的相关图片,正在通过网络获取...`,
+      `本地不存在${getSettings('keyword')}相关图片,正在通过网络获取...`,
     )
     return []
   }
@@ -181,6 +179,33 @@ function checkLocalImage(context) {
   return imageNames
 }
 
+function log(msg) {
+  if (!out) {
+    out = vscode.window.createOutputChannel('super encourager')
+    out.show()
+  }
+  out.appendLine(msg)
+}
+function initTimer(context) {
+  if (!timeMeter) {
+    let timeSetting
+    if (getSettings('type') === 'time-interval') {
+      timeSetting = '00 */' + getSettings('timeInterval') + ' * * * *'
+    } else if (getSettings('type') === 'natural-hour') {
+      timeSetting = '00 00 * * * *'
+    } else if (getSettings('type') === 'natural-half-hour') {
+      timeSetting = '00 00,30 * * * *'
+    }
+    timeMeter = new CronJob(
+      timeSetting,
+      function() {
+        main(context)
+      },
+      null,
+      true,
+    )
+  }
+}
 function main(context) {
   let localImages = checkLocalImage(context)
   if (localImages.length === 0) {
@@ -193,33 +218,6 @@ function main(context) {
   } else {
     loadImage(context, localImages)
     showEncourager(context, localImages)
-  }
-}
-function log(msg) {
-  if (!out) {
-    out = vscode.window.createOutputChannel('super encourager')
-    out.show()
-  }
-  out.appendLine(msg)
-}
-function initTimer(context) {
-  if (!timeMeter) {
-    let timeSetting
-    if (settings.getSettings('type') === 'time-interval') {
-      timeSetting = '* */' + settings.getSettings('timeInterval') + ' * * * *'
-    } else if (settings.getSettings('type') === 'natural-hour') {
-      timeSetting = '00 00 * * * *'
-    } else if (settings.getSettings('type') === 'natural-half-hour') {
-      timeSetting = '00 00,30 * * * *'
-    }
-    timeMeter = new CronJob(
-      timeSetting,
-      function() {
-        main(context)
-      },
-      null,
-      true,
-    )
   }
 }
 function activate(context) {
@@ -243,19 +241,24 @@ function activate(context) {
   let setKeyword = vscode.commands.registerCommand('superencourager.setKeyword', () => {
     vscode.window.showInputBox().then(
       data => {
-        settings.setSettings('keyword', data).then(() => {
+        if (data === undefined) {
+          return
+        }
+        setSettings('keyword', data).then(() => {
           vscode.window.showInformationMessage(`设置关键词 ${data} 成功!`)
         })
       },
       () => {},
     )
   })
-  // FIX ME: 直接调用报 命令未定义
   let switchKeyword = vscode.commands.registerCommand('superencourager.switchKeyword', () => {
     let defaultSelect = ['邓紫棋', '石原里美', '火影忍者', '刺客信条', '极品飞车']
     let select = getKeywords(context).concat(defaultSelect)
     vscode.window.showQuickPick(select).then(data => {
-      settings.setSettings('keyword', data).then(() => {
+      if (data === undefined) {
+        return
+      }
+      setSettings('keyword', data).then(() => {
         vscode.window.showInformationMessage(`切换关键词 ${data} 成功！`)
       })
     })
@@ -267,15 +270,18 @@ function activate(context) {
     vscode.window.showQuickPick(keywords).then(
       data => {
         log(data)
+        if (data === undefined) {
+          return
+        }
         if (data !== ALL_KEYWORD) {
-          delImages(path.join(context.extensionPath, '/images/' + data), context)
+          delImages(path.join(context.extensionPath, '/images/' + data))
           // 同时移出动图文件夹
-          delImages(path.join(context.extensionPath, '/images/' + data + GIF_SUFFIX), context)
+          delImages(path.join(context.extensionPath, '/images/' + data + GIF_SUFFIX))
         } else {
           keywordFolder.forEach(item => {
-            delImages(path.join(context.extensionPath, '/images/' + item), context)
+            delImages(path.join(context.extensionPath, '/images/' + item))
             // 同时移出动图文件夹
-            delImages(path.join(context.extensionPath, '/images/' + item + GIF_SUFFIX), context)
+            delImages(path.join(context.extensionPath, '/images/' + item + GIF_SUFFIX))
           })
         }
       },
