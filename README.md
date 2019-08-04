@@ -12,7 +12,9 @@
 
 ## Requirements
 
-"vscode": "^1.35.0"
+- [VS Code 1.35.1+](https://code.visualstudio.com/)
+- [Node.js 8+](https://nodejs.org)
+  > NOTE: Please make sure that `Node` is in your `PATH` environment variable. You can also use the setting `leetcode.nodePath` to specify the location of your `Node.js` executable.
 
 ## Extension Settings
 
@@ -35,16 +37,16 @@
 
 ### 1.0.1
 
-超级鼓励师 init
+init
+
+### 1.0.2
+
+处理依赖导致无法运行问题
 
 ---
 
-## Working with Markdown
-
-**Note:** 开源公益不易,star 一波吧：P
-
 ### For more information
 
-- [github 源码地址](https://github.com/weiweiwei256/super-encourager)
+- [github](https://github.com/weiweiwei256/super-encourager)   记得star :P
 
 **Enjoy!**

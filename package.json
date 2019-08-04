@@ -1,7 +1,7 @@
 {
   "name": "super-encourager",
   "displayName": "超级鼓励师",
-  "description": "可通过指定关键词通过搜索相关图片并展示，为努力工作的程序猿/媛带来些许轻松。",
+  "description": "过关键词搜索并展示图片，为努力工作的程序猿/媛带来些许轻松。",
   "author": "yajun wei",
   "publisher": "runnerup",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "super encourager",
     "super-encourager"
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "vscode": "^1.35.0"
   },
@@ -131,10 +131,12 @@
     "cron": "^1.7.1",
     "eslint": "^5.13.0",
     "sync-request": "^6.1.0",
-    "typescript": "^3.3.1",
     "vscode": "^1.1.28"
   },
   "dependencies": {
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "axios": "^0.19.0",
+    "cron": "^1.7.1",
+    "sync-request": "^6.1.0"
   }
 }
