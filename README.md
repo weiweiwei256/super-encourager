@@ -14,7 +14,6 @@
 
 - [VS Code 1.35.1+](https://code.visualstudio.com/)
 - [Node.js 8+](https://nodejs.org)
-  > NOTE: Please make sure that `Node` is in your `PATH` environment variable. You can also use the setting `leetcode.nodePath` to specify the location of your `Node.js` executable.
 
 ## Extension Settings
 

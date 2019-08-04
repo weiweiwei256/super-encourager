@@ -7,9 +7,15 @@ const { uncompile, getImagePath, log } = require('./util.js')
 function checkLocalImage() {
   const localKeywordPath = getImagePath()
   if (!fs.existsSync(localKeywordPath)) {
-    vscode.window.showInformationMessage(
-      `本地不存在${getSettings('keyword')}相关图片,正在通过网络获取...`,
-    )
+    if (!getSettings('isGif')) {
+      vscode.window.showInformationMessage(
+        `本地不存在${getSettings('keyword')}相关图片,正在通过网络获取...`,
+      )
+    } else {
+      vscode.window.showInformationMessage(
+        `本地不存在${getSettings('keyword')}相关动图,正在通过网络获取...`,
+      )
+    }
     return []
   }
   let imageNames = fs.readdirSync(localKeywordPath)
