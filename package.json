@@ -2,6 +2,9 @@
   "name": "super-encourager",
   "displayName": "超级鼓励师",
   "description": "可通过指定关键词通过搜索相关图片并展示，为努力工作的程序猿/媛带来些许轻松。",
+  "author": "yajun wei",
+  "publisher": "runnerup",
+  "license": "MIT",
   "keywords": [
     "鼓励",
     "鼓励师",
@@ -52,7 +55,7 @@
           "type": "boolean",
           "default": false,
           "scope": "application",
-          "description": "是否获取动图,通过百度搜索高清动图可能不准确，但也没啥办法"
+          "description": "是否获取动图,通过百度搜索动图可能不准确，但也没啥办法"
         },
         "superencourager.type": {
           "type": "string",
@@ -94,7 +97,6 @@
         "command": "superencourager.showPath",
         "title": "super.showPath:查看图片本地路径"
       }
-
     ],
     "keybindings": [
       {
