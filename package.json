@@ -1,9 +1,10 @@
 {
   "name": "super-encourager",
   "displayName": "超级鼓励师",
-  "description": "过关键词搜索并展示图片，为努力工作的程序猿/媛带来些许轻松。",
+  "description": "根据你设置的关键词搜索美图，奖励下努力工作的你！",
   "author": "yajun wei",
   "publisher": "runnerup",
+  "icon": "resources/super-encourager.jpg",
   "license": "MIT",
   "repository": {
     "type": "git",

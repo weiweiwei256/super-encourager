@@ -1,15 +1,16 @@
 # 超级鼓励师 README
 
-参考其他鼓励师的思路，并扩展相关功能，增强鼓励效果
+参考其他鼓励师的思路，并扩展相关功能，增强鼓励效果<br />
+开源公益不易，你的意见建议是进步的动力。[传送门](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE)<br />
 注意：为节约性能，需要主动触发第一次鼓励,才可触发自动鼓励。
 
 ## Features
 
-- 基于百度图片搜索，根据用户设置的关键字进行个性化搜索，提供你的最爱。
-- 不仅支持特定时间间隔召唤，还支持自然时间（暂时支持：半点，整点）召唤。
-- 简单快捷的关键字管理。
+- 基于百度图片搜索，根据用户设置的关键字进行个性化搜索，你的最爱在等你。
+- 不仅支持特定时间间隔召唤，还支持自然时间（半点，整点）召唤。
+- 简单快捷的关键字管理(增加，切换，删除)。
 - 支持百度动图搜索，但是搜索有可能存在不准的情况。
-- 支持查看本地图片。
+- 支持查看本地图片，方便收藏。
 
 ## Requirements
 
@@ -47,6 +48,6 @@ init
 
 ### For more information
 
-- [github](https://github.com/weiweiwei256/super-encourager)   记得star :P
+- [github](https://github.com/weiweiwei256/super-encourager) 记得 star :P
 
 **Enjoy!**
