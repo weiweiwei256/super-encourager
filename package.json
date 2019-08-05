@@ -85,7 +85,11 @@
     "commands": [
       {
         "command": "superencourager.call",
-        "title": "super.call:召唤超级鼓励师"
+        "title": "call:召唤鼓励师",
+        "icon": {
+          "light": "./resources/call-light.png",
+          "dark": "./resources/call-dark.png"
+        }
       },
       {
         "command": "superencourager.setKeyword",
@@ -122,7 +126,7 @@
       ],
       "editor/title": [
         {
-          "when": "editorFocus",
+          "when": "!explorerResourceIsFolder",
           "command": "superencourager.call",
           "group": "navigation"
         }
