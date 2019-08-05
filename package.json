@@ -103,6 +103,14 @@
         "title": "super.showPath:查看图片本地路径"
       }
     ],
+    "keybindings": [
+      {
+        "command": "superencourager.call",
+        "key": "ctrl+f1",
+        "mac": "cmd+f1",
+        "when": "editorTextFocus"
+      }
+    ],
     "menus": {
       "editor/context": [
         {
