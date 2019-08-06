@@ -27,11 +27,7 @@
     "vscode": "^1.35.0"
   },
   "activationEvents": [
-    "onCommand:superencourager.call",
-    "onCommand:superencourager.setKeyword",
-    "onCommand:superencourager.switchKeyword",
-    "onCommand:superencourager.clearImage",
-    "onCommand:superencourager.showPath"
+    "*"
   ],
   "main": "./src/extension.js",
   "contributes": {
@@ -47,7 +43,7 @@
         },
         "superencourager.timeLast": {
           "type": "number",
-          "default": "5",
+          "default": "0",
           "scope": "application",
           "description": "鼓励持续时间，单位:秒。 设置为0 则不自动关闭"
         },
@@ -76,7 +72,7 @@
         },
         "superencourager.maxImageNum": {
           "type": "number",
-          "default": "30",
+          "default": "40",
           "scope": "application",
           "description": "每个关键字最大图片数量"
         }

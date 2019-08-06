@@ -8,6 +8,7 @@ const { loadImage, delImages, checkLocalImage } = require("./images.js");
 let timeMeter = null; // 计时器
 const ALL_KEYWORD = "**全部**";
 function showEncourager(context, imageNames) {
+  log("展示鼓励页...");
   if (imageNames.length === 0) {
     return;
   }
@@ -45,11 +46,12 @@ function showEncourager(context, imageNames) {
     }
   );
   panel.webview.html = html;
-  if (getSettings("timeLast") !== 0) {
+  let timeLast = parseInt(getSettings("timeLast"));
+  if (timeLast !== 0) {
     // 值为0 则不自动关闭
     setTimeout(() => {
       panel.dispose();
-    }, getSettings("timeLast") * 1000);
+    }, timeLast * 1000);
   }
 }
 
@@ -88,6 +90,8 @@ function main(context) {
   }
 }
 function activate(context) {
+  log("super encourager is starting!");
+  initTimer(context);
   let call = vscode.commands.registerCommand("superencourager.call", () => {
     try {
       main(context);
