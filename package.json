@@ -15,12 +15,12 @@
     "Other"
   ],
   "keywords": [
-    "鼓励",
-    "鼓励师",
     "超级鼓励师",
-    "encourage",
+    "super-encourager",
     "super encourager",
-    "super-encourager"
+    "鼓励师",
+    "鼓励",
+    "encourage"
   ],
   "version": "1.0.9",
   "engines": {
@@ -81,7 +81,7 @@
     "commands": [
       {
         "command": "superencourager.call",
-        "title": "call:召唤鼓励师",
+        "title": "super.call:召唤鼓励师",
         "icon": {
           "light": "./resources/call-light.png",
           "dark": "./resources/call-dark.png"

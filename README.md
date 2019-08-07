@@ -2,7 +2,6 @@
 
 参考其他鼓励师的思路，并扩展相关功能，增强鼓励效果<br />
 开源公益不易，你的意见建议是进步的动力。[传送门](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE)<br />
-注意：为节约性能，需要主动触发第一次鼓励,才可触发自动鼓励。
 
 ## Features
 
