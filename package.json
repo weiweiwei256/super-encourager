@@ -89,7 +89,7 @@
       },
       {
         "command": "superencourager.setKeyword",
-        "title": "super.set:设置搜索关键字"
+        "title": "super.set:设置关键字"
       },
       {
         "command": "superencourager.switchKeyword",
