@@ -37,7 +37,7 @@
       "properties": {
         "superencourager.keyword": {
           "type": "string",
-          "default": "邓紫棋",
+          "default": "石原里美",
           "scope": "application",
           "description": "搜索图片关键字"
         },
