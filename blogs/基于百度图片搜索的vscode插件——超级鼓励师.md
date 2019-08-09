@@ -8,6 +8,12 @@ vscode 插件市场搜索超级鼓励师立即使用
 
 源码地址：[https://github.com/weiweiwei256/super-encourager](https://github.com/weiweiwei256/super-encourager)
 
+![简介图](https://github.com/weiweiwei256/super-encourager/raw/master/blogs/images/introduce.jpeg)
+
+### 效果图：
+
+![效果图](https://github.com/weiweiwei256/super-encourager/raw/master/blogs/images/effect.jpeg)
+
 广告做完了 说正事:P
 
 <hr>
@@ -29,7 +35,7 @@ vscode 插件市场搜索超级鼓励师立即使用
 其他的参数可通过不断更改网站参数，对比url自己探索。
 
 返回参数主要看data,它包含图片的各种信息：
-![data数据截图](https://raw.githubusercontent.com/weiweiwei256/basics-learn/master/docs/resource/editor-data-flow.png)
+![data数据截图](https://github.com/weiweiwei256/super-encourager/raw/master/blogs/images/response-data.png)
 
 其中hoverURL，middleURL,thumbURL的值很多时候是相同的，可以选取其一。
 
@@ -45,13 +51,28 @@ vscode 插件市场搜索超级鼓励师立即使用
 探索之路开始：
 
 1. 通过悬浮功能，查看dom变化，发现image src发生改变，外层li增加class hactive。
+
+![hactive in code](https://github.com/weiweiwei256/super-encourager/raw/master/blogs/images/hactive.png)
+
 2. 全局搜索hactive，sources只可以单文件搜索（也可能我见识浅陋）有由于百度加载文件较多，这样搜索会死人的。可以通过network ctrl+F从所以通过网络获取资源中搜索。这样就相当与全局搜索。如果有需要可以根据资源路径找到源码，断点调试。
 3. 找到 data-objURL属性
+
+![data-objURL in code](https://github.com/weiweiwei256/super-encourager/raw/master/blogs/images/data-objURL.png)
+
 4. 找到 objURL 属性 解析后
+
+![objURL in code](https://github.com/weiweiwei256/super-encourager/raw/master/blogs/images/objURL.png)
+
 5. 百度检索  存在没有与时俱进的问题
+[百度返回的JSON数据解析返回的objURL](https://blog.csdn.net/sinat_35045195/article/details/79205578)
+
 6. 再次搜索映射关键字，找到uncompile源码  授之以鱼不如授之以渔 再也不用担心百度修改编码了
 
+![objURL in code](https://github.com/weiweiwei256/super-encourager/raw/master/blogs/images/uncompile.png)
+
 通过解码后的objURL就可以获取真实地址。
+
+[测试地址]（https://github.com/weiweiwei256/super-encourager/blob/master/note/test.js）
 
 ## 自然时间鼓励
     
