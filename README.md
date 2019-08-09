@@ -43,18 +43,6 @@
 - super.clear:删除关键字
 - super.showPath:查看图片本地路径
 
-## Release Notes
-
-### 1.0.1
-
-init
-
-### 1.0.2
-
-处理依赖导致无法运行问题
-
----
-
 ### For more information
 
 - [github](https://github.com/weiweiwei256/super-encourager) 记得 star :P
