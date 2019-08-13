@@ -1,3 +1,4 @@
-.blogs/**
-.note/**
-.test/**
+**/blogs/**
+**/note/**
+**/test/**
+**/node_modules/**
