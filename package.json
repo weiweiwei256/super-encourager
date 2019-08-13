@@ -4,7 +4,7 @@
   "description": "根据你设置的关键词搜索美图，奖励下努力工作的你！",
   "author": "yajun wei",
   "publisher": "runnerup",
-  "icon": "resources/super-encourager.jpg",
+  "icon": "resources/super-encourager.png",
   "license": "MIT",
   "repository": {
     "type": "git",
