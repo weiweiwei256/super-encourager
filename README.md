@@ -4,11 +4,11 @@
 开源公益不易，你的意见建议是进步的动力。[传送门](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE)<br />
 
 ## 使用方法
-- 召唤鼓励师：
+- 召唤鼓励师的几种方式：
     - 通过文件右键菜单
     - 通过右上编辑器导航（礼物图标）
     - F1进入命令选择，激活命令：super.call:召唤鼓励师
-- 设置关键字
+- 设置关键字的几种方式
     - F1进入命令选择，激活命令：super.set:设置关键字
     - 进入vscode settings，进入extensions,选择“超级鼓励师”，设置关键字条目。
     - 还有其他命令，属性等待你探索欧！！！
