@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>come on</title>
-    <script>
-      const testMode = false;
-       const vscode = testMode ? {} : acquireVsCodeApi();
-       window.addEventListener('message', event => {
-      console.log('receive message',event)
-    });
-    </script>
-  </head>
-  <body>
-    <p>欣赏张美图休息一下吧！！！</p>
-    <p>当前时间：<span id="time"></span></p>
-    <input id='collect' title='选择收藏图片将被保存至"⭐我的最爱"' type='Checkbox' onchange='handleCollect()'>收藏</input>
-    <img id="imageId" src="$image_path$" />
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>come on</title>
   <script>
-    setInterval(function() {
-      var d = new Date()
-      document.getElementById('time').textContent =
-        d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
-    }, 1000)
-    //
-    var collectDom =document.getElementById('collect');
-    // 初始化是否已收藏
-    collectDom.checked =true;
-    // 处理收藏事件
-    var handleCollect = function(){
-      document.getElementById('collect').checked
-      vscode.postMessage({
-        command: 'collect',
-        value:document.getElementById('collect').checked
-			})
-    }
+    const testMode = false;
+    const vscode = testMode ? {} : acquireVsCodeApi();
 
   </script>
+</head>
+
+<body>
+  <p>欣赏张美图休息一下吧！！！</p>
+  <p>当前时间：<span id="time"></span></p>
+  <input id='collect' title='选择收藏图片将被保存至"⭐我的最爱"' type='Checkbox' onchange='handleCollect()'>收藏</input>
+  <br>
+  <img id="imageId" src="$image_path$" />
+</body>
+<script>
+
+  setInterval(function () {
+    var d = new Date()
+    document.getElementById('time').textContent =
+      d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
+  }, 1000)
+  //
+  var collectDom = document.getElementById('collect');
+  // 初始化是否已收藏
+  window.addEventListener('message', event => {
+    let data = event.data
+    if (data.command === 'collect') {
+      collectDom.checked = data.value;
+      alert(collectDom.checked)
+    }
+  });
+  // 处理收藏事件
+  var handleCollect = function () {
+    vscode.postMessage({
+      command: 'collect',
+      value: collectDom.checked
+    })
+  }
+</script>
+
 </html>

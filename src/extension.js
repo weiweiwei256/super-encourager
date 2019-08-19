@@ -4,9 +4,10 @@ const vscode = require('vscode')
 const { getSettings, setSettings } = require('./settings.js')
 const CronJob = require('cron').CronJob
 const { GIF_SUFFIX, getImageRootPath, getKeywords, log } = require('./util.js')
-const { loadImage, delImages, checkLocalImage } = require('./images.js')
+const { saveImage, delImages, cloneImage, findImage, checkLocalImage } = require('./images.js')
 let timeMeter = null // 计时器
 const ALL_KEYWORD = '**全部**'
+const MY_LOVE = '⭐我的最爱'
 function showEncourager(context, imageNames) {
     log('展示鼓励页...')
     if (imageNames.length === 0) {
@@ -33,33 +34,26 @@ function showEncourager(context, imageNames) {
             '"'
         )
     })
-    const resourcePath = path.join(context.extensionPath, '/index.html')
-    const dirPath = path.dirname(resourcePath)
-    let html = fs.readFileSync(resourcePath, 'utf-8')
-    html = html.replace('$image_path$', imagePath)
-    // vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
-    html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
-        return (
-            $1 +
-            vscode.Uri.file(path.resolve(dirPath, $2))
-                .with({ scheme: 'vscode-resource' })
-                .toString() +
-            '"'
-        )
-    })
+    let panel = vscode.window.createWebviewPanel(
+        name, // viewType
+        'come on!!!', // 视图标题
+        vscode.ViewColumn.Beside, // 显示在编辑器的哪个部位
+        {
+            enableScripts: true, // 启用JS，默认禁用
+            retainContextWhenHidden: false, // webview被隐藏时保持状态，避免被重置
+        },
+    )
     panel.webview.html = html
-    panel.webview.html = html
-    panel.webview.postMessage({ command: 'collect' })
+    panel.webview.postMessage({ command: 'collect', value: findImage(MY_LOVE, name) })
     panel.webview.onDidReceiveMessage(
         message => {
             switch (message.command) {
                 case 'collect':
-                    g
                     console.log('extension receive collected', message)
                     if (message.value) {
-                        cloneImage(`${folderName}/${name}`, '⭐我的最爱')
+                        cloneImage(`${folderName}/${name}`, MY_LOVE)
                     } else {
-                        delImages(`⭐我的最爱/${name}`)
+                        delImages(path.join(MY_LOVE, name))
                     }
                     break
                 default:
@@ -68,7 +62,6 @@ function showEncourager(context, imageNames) {
         undefined,
         context.subscriptions,
     )
-
     let timeLast = parseInt(getSettings('timeLast'))
     if (timeLast !== 0) {
         // 值为0 则不自动关闭
@@ -99,9 +92,14 @@ function initTimer(context) {
     }
 }
 function main(context) {
+    // 对我的最爱进行特殊处理
     let localImages = checkLocalImage()
+    if (getSettings('keyword') === MY_LOVE) {
+        showEncourager(context, localImages)
+        return
+    }
     if (localImages.length === 0) {
-        loadImage()
+        saveImage()
             .then(newImages => {
                 if (newImages.length === 0) {
                     vscode.window.showErrorMessage('无法获取相关图片，请更改关键字')
@@ -112,7 +110,7 @@ function main(context) {
                 console.error('err', err)
             })
     } else {
-        loadImage(localImages)
+        saveImage(localImages)
         showEncourager(context, localImages)
     }
 }
@@ -176,8 +174,7 @@ function activate(context) {
             })
     })
     let switchKeyword = vscode.commands.registerCommand('superencourager.switchKeyword', () => {
-        let defaultSelect = ['⭐我的最爱']
-        let select = getKeywords().concat(defaultSelect)
+        let select = getKeywords()
         vscode.window
             .showQuickPick(select)
             .then(data => {
@@ -197,8 +194,8 @@ function activate(context) {
             })
     })
     let clearImage = vscode.commands.registerCommand('superencourager.clearImage', () => {
-        let keywordFolder = fs.readdirSync(getImageRootPath())
         let keywords = getKeywords()
+        keywords = keywords.filter(item => item != MY_LOVE)
         keywords.push(ALL_KEYWORD)
         vscode.window
             .showQuickPick(keywords)
@@ -209,16 +206,14 @@ function activate(context) {
                         return
                     }
                     if (data !== ALL_KEYWORD) {
-                        delImages(path.join(context.extensionPath, '/images/' + data))
+                        delImages(data)
                         // 同时移出动图文件夹
-                        delImages(path.join(context.extensionPath, '/images/' + data + GIF_SUFFIX))
+                        delImages(data + GIF_SUFFIX)
                     } else {
-                        keywordFolder.forEach(item => {
-                            delImages(path.join(context.extensionPath, '/images/' + item))
+                        keywords.forEach(item => {
+                            delImages(item)
                             // 同时移出动图文件夹
-                            delImages(
-                                path.join(context.extensionPath, '/images/' + item + GIF_SUFFIX),
-                            )
+                            delImages(item + GIF_SUFFIX)
                         })
                     }
                 },

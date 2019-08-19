@@ -4,14 +4,32 @@ const vscode = require('vscode')
 const { getSettings } = require('./settings.js')
 let out = null // 终端输出对象
 const GIF_SUFFIX = '_GIF'
+/**
+ *获取extension 中 imagesPath 以 '/' 结尾
+ *
+ * @returns
+ */
 function getImageRootPath() {
     return path.join(
         vscode.extensions.getExtension('runnerup.super-encourager').extensionPath,
         '/images/',
     )
 }
+/**
+ *
+ * 处理判断是否是动图的情况
+ *
+ * @returns
+ */
+function getImagePath() {
+    if (!getSettings('isGif')) {
+        return getImageRootPath() + getSettings('keyword')
+    } else {
+        return getImageRootPath() + getSettings('keyword') + GIF_SUFFIX
+    }
+}
 exports.GIF_SUFFIX = GIF_SUFFIX
-exports.uncompile = function(r) {
+function uncompile(r) {
     const n = /(_z2C\$q|_z&e3B|AzdH3F)/g
     const t = /([a-w\d])/g
     const e = {
@@ -59,13 +77,7 @@ exports.uncompile = function(r) {
         return e[n]
     })
 }
-function getImagePath() {
-    if (!getSettings('isGif')) {
-        return getImageRootPath() + getSettings('keyword')
-    } else {
-        return getImageRootPath() + getSettings('keyword') + GIF_SUFFIX
-    }
-}
+
 function log(msg) {
     if (!out) {
         out = vscode.window.createOutputChannel('super encourager')
@@ -87,7 +99,8 @@ function getKeywords() {
     })
     return Array.from(keywords)
 }
-
+exports.GIF_SUFFIX = GIF_SUFFIX
+exports.uncompile = uncompile
 exports.getImageRootPath = getImageRootPath
 exports.getImagePath = getImagePath
 exports.log = log

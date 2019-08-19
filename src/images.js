@@ -1,9 +1,13 @@
+/**
+ * 所以文件操作参数 默认 /images/目录开始处理
+ */
 const fs = require('fs')
+const path = require('path')
 const vscode = require('vscode')
 const { getSettings } = require('./settings.js')
 const axios = require('axios')
 const syncRequest = require('sync-request')
-const { uncompile, getImagePath, log } = require('./util.js')
+const { uncompile, getImagePath, getImageRootPath, log } = require('./util.js')
 function checkLocalImage() {
     const localKeywordPath = getImagePath()
     if (!fs.existsSync(localKeywordPath)) {
@@ -61,7 +65,7 @@ function syncGetImageUrl(offset) {
     return imageUrl
 }
 
-function loadImage(localIamge = []) {
+function saveImage(localIamge = []) {
     return new Promise((resolve, reject) => {
         if (localIamge.length >= parseInt(getSettings('maxImageNum'))) {
             log('已达到最大图片数量，不再更新获取新的图片！')
@@ -98,7 +102,11 @@ function loadImage(localIamge = []) {
             })
     })
 }
-function delImages(imagePath) {
+function delImages(name, inner = false) {
+    let imagePath = name
+    if (!inner) {
+        imagePath = path.join(getImageRootPath(), name)
+    }
     if (!fs.existsSync(imagePath)) {
         log('路径不存在')
         return '路径不存在'
@@ -109,10 +117,10 @@ function delImages(imagePath) {
         let data = fs.readdirSync(imagePath)
         if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
-                delImages(`${imagePath}/${data[i]}`) //使用递归
+                delImages(`${imagePath}/${data[i]}`, true) //使用递归
                 if (i == data.length - 1) {
                     //删了目录里的内容就删掉这个目录
-                    delImages(`${imagePath}`)
+                    delImages(`${imagePath}`, true)
                 }
             }
         } else {
@@ -128,10 +136,44 @@ function delImages(imagePath) {
  * 拷贝文件到指定目录
  * @param {*} sourceImage 源文件
  * @param {*} targetFolder  目标文件夹路径
- function cloneImage(sourceImage, targetFolder) {}
-*/
+ */
+function cloneImage(sourceImage, targetFolder) {
+    // 校验
+    let sourcePath = path.join(getImageRootPath(), sourceImage)
+    if (!fs.existsSync(sourcePath)) {
+        log(`图片:${sourcePath} 不存在`)
+        return
+    }
+    let targetPath = path.join(getImageRootPath(), targetFolder)
+    if (!fs.existsSync(targetPath)) {
+        fs.mkdirSync(targetPath)
+    }
+    fs.writeFileSync(path.join(targetPath, path.basename(sourceImage)), fs.readFileSync(sourcePath))
+}
+
+/**
+ *
+ *
+ * @param {*} sourceImage
+ * @param {*} targetFolder
+ */
+function findImage(folder, name) {
+    // 校验
+    let parentPath = path.join(getImageRootPath(), folder)
+    if (!fs.existsSync(parentPath)) {
+        log(`文件夹目录:${parentPath} 不存在`)
+        return
+    }
+    let targetPath = path.join(parentPath, name)
+    if (!fs.existsSync(targetPath)) {
+        return false
+    } else {
+        return true
+    }
+}
+exports.findImage = findImage
 exports.checkLocalImage = checkLocalImage
 exports.syncGetImageUrl = syncGetImageUrl
-exports.loadImage = loadImage
+exports.saveImage = saveImage
 exports.delImages = delImages
 exports.cloneImage = cloneImage
