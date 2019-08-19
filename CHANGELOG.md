@@ -2,27 +2,25 @@
 
 All notable changes to the "super-encourage" extension will be documented in this file.
 
-### 1.0.1
+## 1.1.0
 
-init
+新增图片收藏功能
 
-### 1.0.2
+### 1.0.11
 
-处理依赖导致无法运行问题
+支持实时时间显示  
+默认关键字：石原里美
 
-### 1.0.4
+### 1.0.10
 
-文案调整
+统一命名 召唤命令
 
-### 1.0.9 
+### 1.0.9
 
 更新图标
 功能微调
-bugfix: number类型属性读取类型为string
+bugfix: number 类型属性读取类型为 string
 
-### 1.0.10
-统一命名 召唤命令
+### 1.0.1
 
-### 1.0.11
-支持实时时间显示  
-默认关键字：石原里美
+init

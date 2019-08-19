@@ -1,152 +1,152 @@
 {
-  "name": "super-encourager",
-  "displayName": "超级鼓励师",
-  "description": "根据你设置的关键词搜索美图，奖励下努力工作的你！",
-  "author": "yajun wei",
-  "publisher": "runnerup",
-  "icon": "resources/super-encourager.png",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/weiweiwei256/super-encourager"
-  },
-  "homepage": "https://github.com/weiweiwei256/super-encourager/blob/master/README.md",
-  "categories": [
-    "Other"
-  ],
-  "keywords": [
-    "超级鼓励师",
-    "super-encourager",
-    "super encourager",
-    "鼓励师",
-    "鼓励",
-    "encourage"
-  ],
-  "version": "1.0.21",
-  "engines": {
-    "vscode": "^1.35.0"
-  },
-  "activationEvents": [
-    "*"
-  ],
-  "main": "./src/extension.js",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "超级鼓励师",
-      "properties": {
-        "superencourager.keyword": {
-          "type": "string",
-          "default": "石原里美",
-          "scope": "application",
-          "description": "搜索图片关键字"
-        },
-        "superencourager.timeLast": {
-          "type": "number",
-          "default": "0",
-          "scope": "application",
-          "description": "鼓励持续时间，单位:秒。 设置为0 则不自动关闭"
-        },
-        "superencourager.timeInterval": {
-          "type": "number",
-          "default": "30",
-          "scope": "application",
-          "description": "鼓励时间间隔，单位分钟。需要：鼓励方式为：time-interval时，生效"
-        },
-        "superencourager.isGif": {
-          "type": "boolean",
-          "default": false,
-          "scope": "application",
-          "description": "是否获取动图,通过百度搜索动图可能不准确，但也没啥办法"
-        },
-        "superencourager.type": {
-          "type": "string",
-          "enum": [
-            "time-interval",
-            "natural-hour",
-            "natural-half-hour"
-          ],
-          "default": "natural-hour",
-          "scope": "application",
-          "description": "鼓励方式: 特定时间间隔、整点鼓励、半点鼓励。"
-        },
-        "superencourager.maxImageNum": {
-          "type": "number",
-          "default": "40",
-          "scope": "application",
-          "description": "每个关键字最大图片数量"
-        }
-      }
+    "name": "super-encourager",
+    "displayName": "超级鼓励师",
+    "description": "根据你设置的关键词搜索美图，奖励下努力工作的你！",
+    "author": "yajun wei",
+    "publisher": "runnerup",
+    "icon": "resources/super-encourager.png",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/weiweiwei256/super-encourager"
     },
-    "commands": [
-      {
-        "command": "superencourager.call",
-        "title": "super.call:召唤鼓励师",
-        "icon": {
-          "light": "./resources/call-light.png",
-          "dark": "./resources/call-dark.png"
-        }
-      },
-      {
-        "command": "superencourager.setKeyword",
-        "title": "super.set:设置关键字"
-      },
-      {
-        "command": "superencourager.switchKeyword",
-        "title": "super.switch:切换关键字"
-      },
-      {
-        "command": "superencourager.clearImage",
-        "title": "super.clear:删除关键字"
-      },
-      {
-        "command": "superencourager.showPath",
-        "title": "super.showPath:查看图片本地路径"
-      }
+    "homepage": "https://github.com/weiweiwei256/super-encourager/blob/master/README.md",
+    "categories": [
+        "Other"
     ],
-    "keybindings": [
-      {
-        "command": "superencourager.call",
-        "key": "ctrl+f1",
-        "mac": "cmd+f1",
-        "when": "editorTextFocus"
-      }
+    "keywords": [
+        "超级鼓励师",
+        "super-encourager",
+        "super encourager",
+        "鼓励师",
+        "鼓励",
+        "encourage"
     ],
-    "menus": {
-      "editor/context": [
-        {
-          "when": "editorFocus",
-          "command": "superencourager.call",
-          "group": "navigation"
+    "version": "1.1.0",
+    "engines": {
+        "vscode": "^1.35.0"
+    },
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./src/extension.js",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "超级鼓励师",
+            "properties": {
+                "superencourager.keyword": {
+                    "type": "string",
+                    "default": "石原里美",
+                    "scope": "application",
+                    "description": "搜索图片关键字"
+                },
+                "superencourager.timeLast": {
+                    "type": "number",
+                    "default": "0",
+                    "scope": "application",
+                    "description": "鼓励持续时间，单位:秒。 设置为0 则不自动关闭"
+                },
+                "superencourager.timeInterval": {
+                    "type": "number",
+                    "default": "30",
+                    "scope": "application",
+                    "description": "鼓励时间间隔，单位分钟。需要：鼓励方式为：time-interval时，生效"
+                },
+                "superencourager.isGif": {
+                    "type": "boolean",
+                    "default": false,
+                    "scope": "application",
+                    "description": "是否获取动图,通过百度搜索动图可能不准确，但也没啥办法"
+                },
+                "superencourager.type": {
+                    "type": "string",
+                    "enum": [
+                        "time-interval",
+                        "natural-hour",
+                        "natural-half-hour"
+                    ],
+                    "default": "natural-hour",
+                    "scope": "application",
+                    "description": "鼓励方式: 特定时间间隔、整点鼓励、半点鼓励。"
+                },
+                "superencourager.maxImageNum": {
+                    "type": "number",
+                    "default": "40",
+                    "scope": "application",
+                    "description": "每个关键字最大图片数量"
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "superencourager.call",
+                "title": "super.call:召唤鼓励师",
+                "icon": {
+                    "light": "./resources/call-light.png",
+                    "dark": "./resources/call-dark.png"
+                }
+            },
+            {
+                "command": "superencourager.setKeyword",
+                "title": "super.set:设置关键字"
+            },
+            {
+                "command": "superencourager.switchKeyword",
+                "title": "super.switch:切换关键字"
+            },
+            {
+                "command": "superencourager.clearImage",
+                "title": "super.clear:删除关键字"
+            },
+            {
+                "command": "superencourager.showPath",
+                "title": "super.showPath:查看图片本地路径"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "superencourager.call",
+                "key": "ctrl+f1",
+                "mac": "cmd+f1",
+                "when": "editorTextFocus"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "when": "editorFocus",
+                    "command": "superencourager.call",
+                    "group": "navigation"
+                }
+            ],
+            "editor/title": [
+                {
+                    "when": "!explorerResourceIsFolder",
+                    "command": "superencourager.call",
+                    "group": "navigation"
+                }
+            ]
         }
-      ],
-      "editor/title": [
-        {
-          "when": "!explorerResourceIsFolder",
-          "command": "superencourager.call",
-          "group": "navigation"
-        }
-      ]
+    },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test",
+        "pub": "vsce publish patch"
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^10.12.21",
+        "axios": "^0.19.0",
+        "cron": "^1.7.1",
+        "eslint": "^5.13.0",
+        "sync-request": "^6.1.0",
+        "vscode": "^1.1.28"
+    },
+    "dependencies": {
+        "mkdirp": "^0.5.1",
+        "axios": "^0.19.0",
+        "cron": "^1.7.1",
+        "sync-request": "^6.1.0"
     }
-  },
-  "scripts": {
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test",
-    "pub": "vsce publish patch"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.42",
-    "@types/node": "^10.12.21",
-    "axios": "^0.19.0",
-    "cron": "^1.7.1",
-    "eslint": "^5.13.0",
-    "sync-request": "^6.1.0",
-    "vscode": "^1.1.28"
-  },
-  "dependencies": {
-    "mkdirp": "^0.5.1",
-    "axios": "^0.19.0",
-    "cron": "^1.7.1",
-    "sync-request": "^6.1.0"
-  }
 }
