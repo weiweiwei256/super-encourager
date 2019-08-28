@@ -6,6 +6,7 @@ const CronJob = require('cron').CronJob
 const { GIF_SUFFIX, getImageRootPath, getKeywords, log } = require('./util.js')
 const { saveImage, delImages, cloneImage, findImage, checkLocalImage } = require('./images.js')
 let timeMeter = null // 计时器
+let stateBar = undefined
 const ALL_KEYWORD = '**全部**'
 const MY_LOVE = '⭐我的最爱'
 function showEncourager(context, imageNames) {
@@ -25,7 +26,7 @@ function showEncourager(context, imageNames) {
     let html = fs.readFileSync(resourcePath, 'utf-8')
     html = html.replace('$image_path$', imagePath)
     // vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
-    html = html.replace(/(<link.+?href="|<script.+?src="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
+    html = html.replace(/(<link.+?href="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
         return (
             $1 +
             vscode.Uri.file(path.resolve(dirPath, $2))
@@ -62,6 +63,12 @@ function showEncourager(context, imageNames) {
         undefined,
         context.subscriptions,
     )
+    panel.onDidDispose(function() {
+        stateBar.text = '超级鼓励师感谢您的使用！'
+        setTimeout(() => {
+            stateBar.text = '召唤鼓励师'
+        }, 5000)
+    })
     let timeLast = parseInt(getSettings('timeLast'))
     if (timeLast !== 0) {
         // 值为0 则不自动关闭
@@ -70,10 +77,16 @@ function showEncourager(context, imageNames) {
         }, timeLast * 1000)
     }
 }
-
+function initBar() {
+    stateBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0)
+    stateBar.command = 'superencourager.call'
+    stateBar.text = '召唤鼓励师'
+    stateBar.tooltip = '召唤超级鼓励师'
+    stateBar.show()
+}
 function initTimer(context) {
     if (!timeMeter) {
-        let timeSetting
+        let timeSetting = '*/10 * * * * *' // 每5秒执行一次 用于测试
         if (getSettings('type') === 'time-interval') {
             timeSetting = '00 */' + getSettings('timeInterval') + ' * * * *'
         } else if (getSettings('type') === 'natural-hour') {
@@ -84,11 +97,17 @@ function initTimer(context) {
         timeMeter = new CronJob(
             timeSetting,
             function() {
-                main(context)
+                stateBar.text = '召唤鼓励师(已就绪)'
+                vscode.window.showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤').then(data => {
+                    if (data) {
+                        main(context)
+                    }
+                })
             },
             null,
             true,
         )
+        log('timer init')
     }
 }
 function main(context) {
@@ -116,6 +135,7 @@ function main(context) {
 }
 function activate(context) {
     log('super encourager is starting!')
+    initBar()
     initTimer(context)
     let call = vscode.commands.registerCommand('superencourager.call', () => {
         try {
@@ -226,6 +246,7 @@ function activate(context) {
     let showPath = vscode.commands.registerCommand('superencourager.showPath', () => {
         vscode.window.showInformationMessage('超级鼓励师本地资源路径：' + getImageRootPath())
     })
+
     context.subscriptions.push(call)
     context.subscriptions.push(setKeyword)
     context.subscriptions.push(switchKeyword)
