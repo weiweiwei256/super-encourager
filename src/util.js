@@ -79,11 +79,11 @@ function uncompile(r) {
 }
 
 function log(msg) {
-    // if (!out) {
-    //     out = vscode.window.createOutputChannel('super encourager')
-    //     out.show()
-    // }
-    // out.appendLine(msg)
+    if (!out) {
+        out = vscode.window.createOutputChannel('super encourager')
+        // out.show()
+    }
+    out.appendLine(msg)
     console.log(msg)
 }
 function getKeywords() {
