@@ -1,0 +1,5 @@
+{
+    "superencourager.type.time-interval": "固定时间间隔召唤",
+    "superencourager.type.natural-hour": "每小时整点召唤",
+    "superencourager.type.natural-half-hour": "每小时整点或半点召唤"
+}

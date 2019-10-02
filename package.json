@@ -41,6 +41,12 @@
                     "scope": "application",
                     "description": "搜索图片关键字"
                 },
+                "superencourager.needTip": {
+                    "type": "boolean",
+                    "default": false,
+                    "scope": "application",
+                    "description": "是否在召唤之前显示召唤提示"
+                },
                 "superencourager.timeLast": {
                     "type": "number",
                     "default": "0",
@@ -53,12 +59,6 @@
                     "scope": "application",
                     "description": "鼓励时间间隔，单位分钟。需要：鼓励方式为：time-interval时，生效"
                 },
-                "superencourager.isGif": {
-                    "type": "boolean",
-                    "default": false,
-                    "scope": "application",
-                    "description": "是否获取动图,通过百度搜索动图可能不准确，但也没啥办法"
-                },
                 "superencourager.type": {
                     "type": "string",
                     "enum": [
@@ -66,9 +66,20 @@
                         "natural-hour",
                         "natural-half-hour"
                     ],
+                    "enumDescriptions": [
+                        "%superencourager.type.time-interval%",
+                        "%superencourager.type.natural-hour%",
+                        "%superencourager.type.natural-half-hour%"
+                    ],
                     "default": "natural-hour",
                     "scope": "application",
                     "description": "鼓励方式: 特定时间间隔、整点鼓励、半点鼓励。"
+                },
+                "superencourager.isGif": {
+                    "type": "boolean",
+                    "default": false,
+                    "scope": "application",
+                    "description": "是否获取动图,通过百度搜索动图可能不准确，但也没啥办法"
                 },
                 "superencourager.maxImageNum": {
                     "type": "number",

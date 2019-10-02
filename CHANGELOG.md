@@ -1,6 +1,9 @@
 # Change Log
-
 All notable changes to the "super-encourage" extension will be documented in this file.
+
+## 1.1.3
+增加是否在召唤之前显示提示属性  默认为false; 
+
 ## 1.1.2
 
 以更加友好的方式提供鼓励

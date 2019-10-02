@@ -98,11 +98,17 @@ function initTimer(context) {
             timeSetting,
             function() {
                 stateBar.text = '召唤鼓励师(已就绪)'
-                vscode.window.showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤').then(data => {
-                    if (data) {
-                        main(context)
-                    }
-                })
+                if (getSettings('needTip')) {
+                    vscode.window
+                        .showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤')
+                        .then(data => {
+                            if (data) {
+                                main(context)
+                            }
+                        })
+                } else {
+                    main(context)
+                }
             },
             null,
             true,
@@ -141,6 +147,7 @@ function activate(context) {
         try {
             main(context)
             initTimer(context)
+            // 注入当插件属性值被修改后的即使更新回调
             vscode.workspace.onDidChangeConfiguration(function(event) {
                 Promise.resolve(event.affectsConfiguration('superencourager.type'))
                     .then(data => {
