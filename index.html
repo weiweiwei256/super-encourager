@@ -11,14 +11,68 @@
     const vscode = testMode ? {} : acquireVsCodeApi();
 
   </script>
+  <style>
+    body {
+      margin: 20px;
+    }
+
+    #hi-container {
+      text-align: center;
+    }
+
+    .title {
+      text-align: left;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    #hi-word {
+      width: 80%;
+      display: inline-block;
+      margin: 0 auto;
+      word-break: break-all;
+      text-align: left;
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+
+    #hi-footer {
+      width: 80%;
+      display: inline-block;
+      text-align: right;
+    }
+
+    #hi-from {
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+
+    #image-container {
+      text-align: center;
+    }
+
+    #image-container #imageId {
+      width: 90%;
+    }
+  </style>
 </head>
 
 <body>
-  <p>欣赏张美图休息一下吧！！！</p>
   <p>当前时间：<span id="time"></span></p>
-  <input id='collect' title='选择收藏图片将被保存至"⭐我的最爱"' type='Checkbox' onchange='handleCollect()'>收藏</input>
-  <br>
-  <img id="imageId" src="$image_path$" />
+  <div id='hi-container'>
+    <p class='title'>一言精选:</p>
+    <p id='hi-word'></p>
+    <p id='hi-footer'>from <span id='hi-from'></span>
+    </p>
+    <p id='remarks'>鸣谢:<a href="https://hitokoto.cn/">https://hitokoto.cn/</a>提供一言资源</p>
+  </div>
+  <div id='image-container'>
+      <p class='title'>欣赏美图休息一下吧！！！</p>
+    <!-- <img id="imageId" src="$image_path$" /> -->
+    <img id="imageId" src="./test/images/test.jpeg" />
+    <br>
+    <input id='collect' title='选择收藏图片将被保存至"⭐我的最爱"' type='Checkbox' onchange='handleCollect()'>收藏至"⭐我的最爱"</input>
+  </div>
 </body>
 <script>
 
@@ -43,6 +97,20 @@
       command: 'collect',
       value: collectDom.checked
     })
+  }
+  window.onload = function () {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://v1.hitokoto.cn/?c=d');
+    xhr.send();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        var hitokotoData = JSON.parse(xhr.responseText)
+        // TEST:
+        // hitokotoData.hitokoto = 'asdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffff'
+        document.getElementById('hi-word').textContent = hitokotoData.hitokoto
+        document.getElementById('hi-from').textContent = hitokotoData.from
+      }
+    };
   }
 </script>
 
