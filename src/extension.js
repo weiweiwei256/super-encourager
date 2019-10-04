@@ -1,14 +1,17 @@
 const fs = require('fs')
 const path = require('path')
 const vscode = require('vscode')
-const { getSettings, setSettings } = require('./settings.js')
 const CronJob = require('cron').CronJob
+const { types } = require('./types.js')
+const { getSettings, setSettings } = require('./settings.js')
 const { GIF_SUFFIX, getImageRootPath, getKeywords, log } = require('./util.js')
 const { saveImage, delImages, cloneImage, findImage, checkLocalImage } = require('./images.js')
+const { getGlobalState, setGlobalState } = require('./state.js')
 let timeMeter = null // 计时器
 let stateBar = undefined
 const ALL_KEYWORD = '**全部**'
 const MY_LOVE = '⭐我的最爱'
+
 function showEncourager(context, imageNames) {
     log('展示鼓励页...')
     if (imageNames.length === 0) {
@@ -26,17 +29,17 @@ function showEncourager(context, imageNames) {
     let html = fs.readFileSync(resourcePath, 'utf-8')
     html = html.replace('$image_path$', imagePath)
     // vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
-    html = html.replace(/(<link.+?href="|<img.+?src=")(.+?)"/g, (m, $1, $2) => {
-        return (
+    html = html.replace(/(<link.+?href='|<img.+?src=')(.+?)'/g, (m, $1, $2) => {
+        let result =
             $1 +
             vscode.Uri.file(path.resolve(dirPath, $2))
                 .with({ scheme: 'vscode-resource' })
                 .toString() +
-            '"'
-        )
+            "'"
+        return result
     })
-    let panel = vscode.window.createWebviewPanel(
-        name, // viewType
+    const panel = vscode.window.createWebviewPanel(
+        'super-encourager', // viewType
         'come on!!!', // 视图标题
         vscode.ViewColumn.Beside, // 显示在编辑器的哪个部位
         {
@@ -45,12 +48,24 @@ function showEncourager(context, imageNames) {
         },
     )
     panel.webview.html = html
-    panel.webview.postMessage({ command: 'collect', value: findImage(MY_LOVE, name) })
     panel.webview.onDidReceiveMessage(
         message => {
+            log('后台接收消息:' + JSON.stringify(message))
             switch (message.command) {
-                case 'collect':
-                    console.log('extension receive collected', message)
+                case types.COMMANDS.INIT_GLOBAL_STATE:
+                    // 局部变量
+                    let currentState = {
+                        [types.CURRENT.CURRENT_COLLECT_STATE]: findImage(MY_LOVE, name),
+                    }
+                    panel.webview.postMessage({
+                        command: types.COMMANDS.INIT_GLOBAL_STATE,
+                        value: { globalState: getGlobalState(context), currentState },
+                    })
+                    break
+                case types.COMMANDS.UPDATE_GLOBAL_STATE:
+                    setGlobalState(context, message.value)
+                    break
+                case types.COMMANDS.UPDATE_COLLECT_STATE:
                     if (message.value) {
                         cloneImage(`${folderName}/${name}`, MY_LOVE)
                     } else {
@@ -64,6 +79,7 @@ function showEncourager(context, imageNames) {
         context.subscriptions,
     )
     panel.onDidDispose(function() {
+        log('鼓励师已销毁')
         stateBar.text = '超级鼓励师感谢您的使用！'
         setTimeout(() => {
             stateBar.text = '召唤鼓励师'
@@ -140,6 +156,8 @@ function main(context) {
     }
 }
 function activate(context) {
+    // TEST:
+    // context.globalState._value = {}
     log('super encourager is starting!')
     initBar()
     initTimer(context)

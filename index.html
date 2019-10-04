@@ -6,11 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>come on</title>
-  <script>
-    const testMode = false;
-    const vscode = testMode ? {} : acquireVsCodeApi();
-
-  </script>
   <style>
     body {
       margin: 20px;
@@ -26,10 +21,23 @@
       font-weight: bold;
     }
 
+    .icon {
+      width: 1.3rem;
+      height: 1.3rem;
+      vertical-align: sub;
+    }
+
+    #select-container {
+      display: none;
+    }
+
+    #select_hi_type {
+      vertical-align: middle;
+    }
+
     #hi-word {
       width: 80%;
       display: inline-block;
-      margin: 0 auto;
       word-break: break-all;
       text-align: left;
       font-weight: bold;
@@ -37,6 +45,7 @@
     }
 
     #hi-footer {
+      margin-top: -1rem;
       width: 80%;
       display: inline-block;
       text-align: right;
@@ -60,58 +69,135 @@
 <body>
   <p>当前时间：<span id="time"></span></p>
   <div id='hi-container'>
-    <p class='title'>一言精选:</p>
-    <p id='hi-word'></p>
+    <form class='title'>一言精选: <img src='resources/reload.png' class='icon' title='下一条' onclick='reloadHitokoto()'>
+      <img src='resources/setting.png' class='icon' title='设置类别' alt='设置类别' onclick='showSelectType()'>
+      <div id='select-container'>
+        <span style='font-size: 0.9rem;font-weight: normal;'>设置类别: </span>
+        <select id='select_hi_type' onchange='changeType()'>
+          <option value="">随机</option>
+          <option value="a">动画</option>
+          <option value="b">漫画</option>
+          <option value="c">游戏</option>
+          <option value="d">小说</option>
+          <option value="e">原创</option>
+          <option value="f">网络</option>
+          <option value="g">其他</option>
+        </select>
+      </div>
+    </form>
+    <p id='hi-word'>拼命加载中...</p>
     <p id='hi-footer'>from <span id='hi-from'></span>
     </p>
     <p id='remarks'>鸣谢:<a href="https://hitokoto.cn/">https://hitokoto.cn/</a>提供一言资源</p>
   </div>
   <div id='image-container'>
-      <p class='title'>欣赏美图休息一下吧！！！</p>
-    <!-- <img id="imageId" src="$image_path$" /> -->
-    <img id="imageId" src="./test/images/test.jpeg" />
+    <p class='title'>欣赏美图休息一下吧！！！</p>
+    <img id='imageId' src='$image_path$' />
+    <!-- <img id="imageId" src="./test/images/test.jpeg" /> -->
     <br>
     <input id='collect' title='选择收藏图片将被保存至"⭐我的最爱"' type='Checkbox' onchange='handleCollect()'>收藏至"⭐我的最爱"</input>
   </div>
 </body>
 <script>
+  // TEST:
+  const testMode = false;
+  const vscode = testMode ? {} : acquireVsCodeApi()
+  // 命令常量
+  const types = {}
+  types.COMMANDS = {}
+  types.COMMANDS.INIT_GLOBAL_STATE = 'init_global_state'
+  types.COMMANDS.UPDATE_GLOBAL_STATE = 'update_global_state'
+  // 及时状态
+  types.COMMANDS.UPDATE_COLLECT_STATE = 'update_collect_state'
+  types.CURRENT = {}
+  types.CURRENT.CURRENT_COLLECT_STATE = 'current_collect_state'
+  // global变量常量
+  types.GLOBAL = {}
+  types.GLOBAL.HITOKOTO_TYPE = 'hitokoto_type'
 
-  setInterval(function () {
-    var d = new Date()
-    document.getElementById('time').textContent =
-      d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
-  }, 1000)
-  //
-  var collectDom = document.getElementById('collect');
-  // 初始化是否已收藏
+  //环境变量
+  let globalState = {};
+  // 内部变量
+  let selectorDom = document.getElementById('select_hi_type')
+
+  window.onload = function () {
+    sendMessage(types.COMMANDS.INIT_GLOBAL_STATE);
+  }
+  let sendMessage = function (command, value) {
+    if (!testMode) {
+      vscode.postMessage({
+        command,
+        value
+      })
+    } else {
+      console.log(command + JSON.stringify(value))
+    }
+  }
+  // FIXME: 理想的处理方式当webview关闭时 触发一次更新即可,但是经过测试 window.οnbefοreunlοad,window.onunload 都没有触发
+  // 所以只能每次修改后手动触发更新
+  let updateGlobalState = function () {
+    sendMessage(types.COMMANDS.UPDATE_GLOBAL_STATE, globalState)
+  }
   window.addEventListener('message', event => {
     let data = event.data
-    if (data.command === 'collect') {
-      collectDom.checked = data.value;
-      alert(collectDom.checked)
+    if (data.command === types.COMMANDS.INIT_GLOBAL_STATE) {
+      console.log(JSON.stringify(data.value))
+      initAccordingGlobalState(data.value)
+    }
+    else if (data.command === types.COMMANDS.UPDATE_COLLECT_STATE) {
+      document.getElementById('collect').checked = data.value;
     }
   });
-  // 处理收藏事件
-  var handleCollect = function () {
-    vscode.postMessage({
-      command: 'collect',
-      value: collectDom.checked
-    })
+  let initAccordingGlobalState = function (state) {
+    let { globalState, currentState } = state
+    globalState = globalState;
+    reloadHitokoto(globalState[types.GLOBAL.HITOKOTO_TYPE])
+    document.getElementById('collect').checked = currentState[types.CURRENT.CURRENT_COLLECT_STATE];
   }
-  window.onload = function () {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://v1.hitokoto.cn/?c=d');
+  let reloadHitokoto = function (key) {
+    if (key) {
+      selectorDom.value = key
+    } else {
+      key = selectorDom.value
+    }
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://v1.hitokoto.cn/?c=' + key);
     xhr.send();
     xhr.onreadystatechange = function () {
       if (xhr.readyState == 4 && xhr.status == 200) {
-        var hitokotoData = JSON.parse(xhr.responseText)
-        // TEST:
-        // hitokotoData.hitokoto = 'asdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffffasdffffffffff'
+        let hitokotoData = JSON.parse(xhr.responseText)
         document.getElementById('hi-word').textContent = hitokotoData.hitokoto
         document.getElementById('hi-from').textContent = hitokotoData.from
       }
     };
   }
+  let showSelectType = function () {
+    let displayVal = document.getElementById('select-container').style.display
+    if (!displayVal || displayVal === 'none') {
+      document.getElementById('select-container').style.display = 'inline'
+    } else {
+      document.getElementById('select-container').style.display = 'none'
+    }
+  }
+  let handleCollect = function () {
+    sendMessage(types.COMMANDS.UPDATE_COLLECT_STATE, document.getElementById('collect').checked)
+  }
+
+  let changeType = function () {
+    let newType = selectorDom.value
+    globalState[types.GLOBAL.HITOKOTO_TYPE] = newType
+    updateGlobalState();
+    reloadHitokoto(newType)
+  }
+
+  // time
+  setInterval(function () {
+    let d = new Date()
+    document.getElementById('time').textContent =
+      d.toLocaleDateString() + ' ' + d.toLocaleTimeString()
+  }, 1000)
+
+
 </script>
 
 </html>
