@@ -1,8 +1,11 @@
 # Change Log
 All notable changes to the "super-encourage" extension will be documented in this file.
 
-## 1.1.3
-增加是否在召唤之前显示提示属性  默认为false; 
+## 2.0.1
+
+<b>新增一言精选功能</b>&nbsp;&nbsp;&nbsp;&nbsp;鸣谢:[https://hitokoto.cn](https://hitokoto.cn)提供的一言API
+
+增加配置:是否在召唤之前显示提示弹框  默认为false; 
 
 ## 1.1.2
 
