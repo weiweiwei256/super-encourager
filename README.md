@@ -1,10 +1,10 @@
 # 超级鼓励师 README
 
-基于百度搜索和一言 API,定制您的私人鼓励师,希望能为努力工作的您带来鼓励和温暖!
+基于百度搜索定制您的私人鼓励师,希望能为努力工作的您带来鼓励和温暖!
 
-开源公益不易，您的建议是我前进的动力。
+开源,公益,不易，您的建议是我前进的动力。
 
-地址:[https://github.com/weiweiwei256/super-encourager](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE)
+源码地址:[https://github.com/weiweiwei256/super-encourager](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE) 记得star :P
 
 ## 使用方法
 
@@ -19,7 +19,7 @@
     -   进入 vscode settings，进入 extensions,选择“超级鼓励师”，设置关键字条目。
     -   还有其他命令，属性等待您探索欧！！！
 
-## Features
+## 特点
 
 -   一言精选功能 (最新)
 -   基于百度图片搜索，根据用户设置的关键字进行个性化搜索，您的最爱在等你。
@@ -29,7 +29,7 @@
 -   支持百度动图搜索，但是搜索有可能存在不准的情况。
 -   支持查看本地图片，方便收藏。
 
-## Requirements
+## 依赖
 
 -   [VS Code 1.35.1+](https://code.visualstudio.com/)
 -   [Node.js 8+](https://nodejs.org)
@@ -61,12 +61,13 @@
 -   [简书:基于百度图片搜索的 vscode 插件——超级鼓励师](https://www.jianshu.com/p/ae750a86eaf8)
 
 #### 鸣谢意见建议
+-  [v1.hitokoto.cn](v1.hitokoto.cn) 提供的一言API
 
 -  [liguobao](https://github.com/liguobao) 
 
     - [issues#3](https://github.com/weiweiwei256/super-encourager/issues/3)
 
-    - 建议使用 [v1.hitokoto.cn](v1.hitokoto.cn)
+    - 建议使用一言API
 
 -  [Elisony](https://github.com/Elisony) 
     - [issues#2](https://github.com/weiweiwei256/super-encourager/issues/2)

@@ -1,5 +1,4 @@
 # Change Log
-All notable changes to the "super-encourage" extension will be documented in this file.
 
 ## 2.0.1
 
