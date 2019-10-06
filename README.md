@@ -60,4 +60,15 @@
 
 -   [简书:基于百度图片搜索的 vscode 插件——超级鼓励师](https://www.jianshu.com/p/ae750a86eaf8)
 
+#### 鸣谢意见建议
+
+-  [liguobao](https://github.com/liguobao) 
+
+    - [issues#3](https://github.com/weiweiwei256/super-encourager/issues/3)
+
+    - 建议使用 [v1.hitokoto.cn](v1.hitokoto.cn)
+
+-  [Elisony](https://github.com/Elisony) 
+    - [issues#2](https://github.com/weiweiwei256/super-encourager/issues/2)
+
 **Enjoy!**
