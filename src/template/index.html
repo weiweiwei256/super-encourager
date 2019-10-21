@@ -69,8 +69,8 @@
 <body>
   <p>当前时间：<span id="time"></span></p>
   <div id='hi-container'>
-    <form class='title'>一言精选: <img src='resources/reload.png' class='icon' title='下一条' onclick='reloadHitokoto()'>
-      <img src='resources/setting.png' class='icon' title='设置类别' alt='设置类别' onclick='showSelectType()'>
+    <form class='title'>一言精选: <img src='img/reload.png' class='icon' title='下一条' onclick='reloadHitokoto()'>
+      <img src='img/setting.png' class='icon' title='设置类别' alt='设置类别' onclick='showSelectType()'>
       <div id='select-container'>
         <span style='font-size: 0.9rem;font-weight: normal;'>设置类别: </span>
         <select id='select_hi_type' onchange='changeType()'>
@@ -98,6 +98,7 @@
     <input id='collect' title='选择收藏图片将被保存至"⭐我的最爱"' type='Checkbox' onchange='handleCollect()'>收藏至"⭐我的最爱"</input>
   </div>
 </body>
+<script src='test.js'></script>
 <script>
   // TEST:
   const testMode = false;
