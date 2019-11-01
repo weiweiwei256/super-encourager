@@ -49,7 +49,7 @@
                 },
                 "superencourager.timeLast": {
                     "type": "number",
-                    "default": "0",
+                    "default": "10",
                     "scope": "application",
                     "description": "鼓励持续时间，单位:秒。 设置为0 则不自动关闭"
                 },

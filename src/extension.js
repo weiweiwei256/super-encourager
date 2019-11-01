@@ -41,7 +41,7 @@ function showEncourager(context, imageNames) {
     })
     const panel = vscode.window.createWebviewPanel(
         'super-encourager', // viewType
-        'come on!!!', // 视图标题
+        '超级鼓励师', // 视图标题
         vscode.ViewColumn.Beside, // 显示在编辑器的哪个部位
         {
             enableScripts: true, // 启用JS，默认禁用
