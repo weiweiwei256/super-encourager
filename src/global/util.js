@@ -1,19 +1,33 @@
+/*
+ * @Author: RUNNERUP
+ * @Date: 2019-10-07 23:02:07
+ * @Description:
+ */
 const path = require('path')
 const fs = require('fs')
 const vscode = require('vscode')
 const { getSettings } = require('./settings.js')
 let out = null // 终端输出对象
+let context = undefined
 const GIF_SUFFIX = '_GIF'
+
+function setContext(context) {
+    this.context = context
+}
+function getContext() {
+    return this.context
+}
+
+function getExtensionPath() {
+    return vscode.extensions.getExtension('runnerup.super-encourager').extensionPath
+}
 /**
  *获取extension 中 imagesPath 以 '/' 结尾
  *
  * @returns
  */
 function getImageRootPath() {
-    return path.join(
-        vscode.extensions.getExtension('runnerup.super-encourager').extensionPath,
-        '/images/',
-    )
+    return path.join(getExtensionPath(), '/images/')
 }
 /**
  *
@@ -28,7 +42,6 @@ function getImagePath() {
         return getImageRootPath() + getSettings('keyword') + GIF_SUFFIX
     }
 }
-exports.GIF_SUFFIX = GIF_SUFFIX
 function uncompile(r) {
     const n = /(_z2C\$q|_z&e3B|AzdH3F)/g
     const t = /([a-w\d])/g
@@ -102,6 +115,9 @@ function getKeywords() {
 }
 exports.GIF_SUFFIX = GIF_SUFFIX
 exports.uncompile = uncompile
+exports.setContext = setContext
+exports.getContext = getContext
+exports.getExtensionPath = getExtensionPath
 exports.getImageRootPath = getImageRootPath
 exports.getImagePath = getImagePath
 exports.log = log
