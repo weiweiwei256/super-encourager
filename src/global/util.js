@@ -16,11 +16,14 @@ function setContext(context) {
 function getContext() {
     return this.context
 }
+function getConfiguration() {
+    return vscode.workspace.getConfiguration('superencourager')
+}
 function getSettings(key) {
-    return vscode.workspace.getConfiguration('superencourager').get(key)
+    return getConfiguration().get(key)
 }
 function setSettings(key, value) {
-    return vscode.workspace.getConfiguration('superencourager').update(key, value, true)
+    return getConfiguration().update(key, value, true)
 }
 function getExtensionPath() {
     return vscode.extensions.getExtension('runnerup.super-encourager').extensionPath
@@ -122,6 +125,7 @@ exports.GIF_SUFFIX = GIF_SUFFIX
 exports.uncompile = uncompile
 exports.setContext = setContext
 exports.getContext = getContext
+exports.getConfiguration = getConfiguration
 exports.getSettings = getSettings
 exports.setSettings = setSettings
 exports.getExtensionPath = getExtensionPath

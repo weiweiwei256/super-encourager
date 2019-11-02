@@ -47,8 +47,9 @@ function showEncourager(imageNames) {
     panel.webview.onDidReceiveMessage(
         message => {
             log('后台接收消息:' + JSON.stringify(message))
-            let ret = commandHandler.handleCommand(message)
-            panel.webview.postMessage(ret)
+            let sendPkg = commandHandler.handleCommand(message)
+            log('后台发送消息:'+JSON.stringify(sendPkg))
+            panel.webview.postMessage(sendPkg)
 
             // switch (message.command) {
             //     case types.COMMANDS.INIT_GLOBAL_STATE:

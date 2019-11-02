@@ -9,56 +9,17 @@ const {
     getKeywords,
     log,
 } = require('./global/util.js')
+const { initContext } = require('./global/global-state.js')
 const { delImages } = require('./global/images.js')
 const { main } = require('./encourager.js')
 let timeMeter = null // 计时器
 let stateBar = undefined
 const ALL_KEYWORD = '**全部**'
 const MY_LOVE = '⭐我的最爱'
-
-function initBar() {
-    stateBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0)
-    stateBar.command = 'superencourager.call'
-    stateBar.text = '召唤鼓励师'
-    stateBar.tooltip = '召唤超级鼓励师'
-    stateBar.show()
-}
-function initTimer() {
-    if (!timeMeter) {
-        let timeSetting = '*/10 * * * * *' // 每5秒执行一次 用于测试
-        if (getSettings('type') === 'time-interval') {
-            timeSetting = '00 */' + getSettings('timeInterval') + ' * * * *'
-        } else if (getSettings('type') === 'natural-hour') {
-            timeSetting = '00 00 * * * *'
-        } else if (getSettings('type') === 'natural-half-hour') {
-            timeSetting = '00 00,30 * * * *'
-        }
-        timeMeter = new CronJob(
-            timeSetting,
-            function() {
-                stateBar.text = '召唤鼓励师(已就绪)'
-                if (getSettings('needTip')) {
-                    vscode.window
-                        .showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤')
-                        .then(data => {
-                            if (data) {
-                                main()
-                            }
-                        })
-                } else {
-                    main()
-                }
-            },
-            null,
-            true,
-        )
-        log('timer init')
-    }
-}
-
 function activate(context) {
     log('super encourager is starting!')
     setContext(context)
+    initContext(context)
     initBar()
     initTimer()
     let call = vscode.commands.registerCommand('superencourager.call', () => {
@@ -178,11 +139,47 @@ function activate(context) {
     context.subscriptions.push(clearImage)
     context.subscriptions.push(showPath)
 }
+
+function initBar() {
+    stateBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0)
+    stateBar.command = 'superencourager.call'
+    stateBar.text = '召唤鼓励师'
+    stateBar.tooltip = '召唤超级鼓励师'
+    stateBar.show()
+}
+function initTimer() {
+    if (!timeMeter) {
+        let timeSetting = '*/10 * * * * *' // 每5秒执行一次 用于测试
+        if (getSettings('type') === 'time-interval') {
+            timeSetting = '00 */' + getSettings('timeInterval') + ' * * * *'
+        } else if (getSettings('type') === 'natural-hour') {
+            timeSetting = '00 00 * * * *'
+        } else if (getSettings('type') === 'natural-half-hour') {
+            timeSetting = '00 00,30 * * * *'
+        }
+        timeMeter = new CronJob(
+            timeSetting,
+            function() {
+                stateBar.text = '召唤鼓励师(已就绪)'
+                if (getSettings('needTip')) {
+                    vscode.window
+                        .showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤')
+                        .then(data => {
+                            if (data) {
+                                main()
+                            }
+                        })
+                } else {
+                    main()
+                }
+            },
+            null,
+            true,
+        )
+        log('timer init')
+    }
+}
+
 exports.activate = activate
 
-function deactivate() {}
-
-module.exports = {
-    activate,
-    deactivate,
-}
+exports.deactivate = function() {}

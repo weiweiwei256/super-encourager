@@ -1,10 +1,9 @@
-// const { getGlobalState, setGlobalState } = require('./state.js')
-const vscode = require('vscode')
+const { getConfiguration } = require('../global/util.js')
+const { getGlobalState } = require('../global/global-state.js')
 exports.handle = function(arg) {
-    let config = vscode.workspace.getConfiguration('superencourager')
-    let extensionsData = vscode.extensions.getExtension('runnerup.super-encourager')
-    console.error('-----------------------------------------')
+    let config = getConfiguration()
+    let globalState = getGlobalState()
     console.log(config)
-    console.log(extensionsData)
-    return { config }
+    console.log(globalState)
+    return { config, globalState }
 }
