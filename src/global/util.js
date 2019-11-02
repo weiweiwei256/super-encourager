@@ -6,7 +6,6 @@
 const path = require('path')
 const fs = require('fs')
 const vscode = require('vscode')
-const { getSettings } = require('./settings.js')
 let out = null // 终端输出对象
 let context = undefined
 const GIF_SUFFIX = '_GIF'
@@ -17,7 +16,12 @@ function setContext(context) {
 function getContext() {
     return this.context
 }
-
+function getSettings(key) {
+    return vscode.workspace.getConfiguration('superencourager').get(key)
+}
+function setSettings(key, value) {
+    return vscode.workspace.getConfiguration('superencourager').update(key, value, true)
+}
 function getExtensionPath() {
     return vscode.extensions.getExtension('runnerup.super-encourager').extensionPath
 }
@@ -41,6 +45,29 @@ function getImagePath() {
     } else {
         return getImageRootPath() + getSettings('keyword') + GIF_SUFFIX
     }
+}
+
+function log(msg) {
+    if (!out) {
+        out = vscode.window.createOutputChannel('super encourager')
+        // out.show()
+    }
+    out.appendLine(msg)
+    console.log(msg)
+}
+function getKeywords() {
+    let keywordFolder = fs.readdirSync(getImageRootPath())
+    let keywords = new Set()
+    keywordFolder.forEach(item => {
+        if (item !== '.DS_Store' && item !== '.gitkeep') {
+            if (item.endsWith(GIF_SUFFIX)) {
+                keywords.add(item.substring(0, item.indexOf(GIF_SUFFIX)))
+            } else {
+                keywords.add(item)
+            }
+        }
+    })
+    return Array.from(keywords)
 }
 function uncompile(r) {
     const n = /(_z2C\$q|_z&e3B|AzdH3F)/g
@@ -91,32 +118,12 @@ function uncompile(r) {
     })
 }
 
-function log(msg) {
-    if (!out) {
-        out = vscode.window.createOutputChannel('super encourager')
-        // out.show()
-    }
-    out.appendLine(msg)
-    console.log(msg)
-}
-function getKeywords() {
-    let keywordFolder = fs.readdirSync(getImageRootPath())
-    let keywords = new Set()
-    keywordFolder.forEach(item => {
-        if (item !== '.DS_Store' && item !== '.gitkeep') {
-            if (item.endsWith(GIF_SUFFIX)) {
-                keywords.add(item.substring(0, item.indexOf(GIF_SUFFIX)))
-            } else {
-                keywords.add(item)
-            }
-        }
-    })
-    return Array.from(keywords)
-}
 exports.GIF_SUFFIX = GIF_SUFFIX
 exports.uncompile = uncompile
 exports.setContext = setContext
 exports.getContext = getContext
+exports.getSettings = getSettings
+exports.setSettings = setSettings
 exports.getExtensionPath = getExtensionPath
 exports.getImageRootPath = getImageRootPath
 exports.getImagePath = getImagePath

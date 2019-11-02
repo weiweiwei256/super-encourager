@@ -1,5 +1,5 @@
 const { getContext } = require('../global/util.js')
-let context = getContext();
+let context = getContext()
 exports.getGlobalState = function getGlobalState() {
     let state = context.globalState._value || {}
     // 设置默认值
@@ -13,10 +13,9 @@ exports.setGlobalState = function setGlobalState(newGlobalState) {
         }
     }
 }
-exports.getState = function getState(, key, defaultValue) {
+exports.getState = function getState(key, defaultValue) {
     return context.globalState.get(key, defaultValue)
 }
-exports.setState = function setState(, key, value) {
+exports.setState = function setState(key, value) {
     return context.globalState.update(key, value)
 }
-

@@ -1,7 +1,14 @@
 const vscode = require('vscode')
 const CronJob = require('cron').CronJob
-const { getSettings, setSettings } = require('./global/settings.js')
-const { setContext, GIF_SUFFIX, getImageRootPath, getKeywords, log } = require('./global/util.js')
+const {
+    setContext,
+    getSettings,
+    setSettings,
+    GIF_SUFFIX,
+    getImageRootPath,
+    getKeywords,
+    log,
+} = require('./global/util.js')
 const { delImages } = require('./global/images.js')
 const { main } = require('./encourager.js')
 let timeMeter = null // 计时器

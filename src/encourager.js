@@ -1,8 +1,7 @@
 const vscode = require('vscode')
 const fs = require('fs')
 const path = require('path')
-const { getSettings } = require('./global/settings.js')
-const { getExtensionPath, GIF_SUFFIX, log } = require('./global/util.js')
+const {getSettings, getExtensionPath, GIF_SUFFIX, log } = require('./global/util.js')
 const { saveImage, checkLocalImage } = require('./global/images.js')
 const { commandHandler } = require('./commands/command-handler.js')
 let stateBar = undefined

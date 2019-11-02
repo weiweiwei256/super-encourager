@@ -4,10 +4,9 @@
 const fs = require('fs')
 const path = require('path')
 const vscode = require('vscode')
-const { getSettings } = require('./settings.js')
 const axios = require('axios')
 const syncRequest = require('sync-request')
-const { uncompile, getImagePath, getImageRootPath, log } = require('./util.js')
+const { getSettings, uncompile, getImagePath, getImageRootPath, log } = require('./util.js')
 function checkLocalImage() {
     const localKeywordPath = getImagePath()
     if (!fs.existsSync(localKeywordPath)) {
