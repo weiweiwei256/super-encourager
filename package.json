@@ -103,10 +103,6 @@
                 "title": "super.set:设置关键字"
             },
             {
-                "command": "superencourager.switchKeyword",
-                "title": "super.switch:切换关键字"
-            },
-            {
                 "command": "superencourager.clearImage",
                 "title": "super.clear:删除关键字"
             },

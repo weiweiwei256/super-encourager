@@ -50,6 +50,24 @@ function getKeywords() {
     })
     return Array.from(keywords)
 }
+
+/**
+ * 后者覆盖前者
+ *
+ * @param {*} FirstOBJ
+ * @param {*} SecondOBJ
+ * @returns
+ */
+function deepObjectMerge(FirstOBJ, SecondOBJ) {
+    for (var key in SecondOBJ) {
+        FirstOBJ[key] =
+            FirstOBJ[key] && FirstOBJ[key].toString() === '[object Object]'
+                ? deepObjectMerge(FirstOBJ[key], SecondOBJ[key])
+                : (FirstOBJ[key] = SecondOBJ[key])
+    }
+    return FirstOBJ
+}
+exports.MY_LOVE = '⭐我的最爱'
 exports.setContext = setContext
 exports.getContext = getContext
 exports.getConfiguration = getConfiguration
@@ -58,4 +76,4 @@ exports.setSettings = setSettings
 exports.getExtensionPath = getExtensionPath
 exports.log = log
 exports.getKeywords = getKeywords
-exports.MY_LOVE = '⭐我的最爱'
+exports.deepObjectMerge = deepObjectMerge

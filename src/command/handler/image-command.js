@@ -14,8 +14,8 @@ async function handle() {
         .split(' ')
         .filter(item => item.length > 0)
     // TEST:
-    let activeKey = '石原里美'
-    // let activeKey = keys[Math.floor(Math.random(20191103) * keys.length)]
+    // let activeKey = '石原里美'
+    let activeKey = keys[Math.floor(Math.random(20191103) * keys.length)]
     log('当前获取的关键字:' + activeKey)
     let localImages = checkLocalImage(activeKey)
     if (localImages.length === 0 && activeKey === MY_LOVE) {

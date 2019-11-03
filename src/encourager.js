@@ -27,7 +27,7 @@ function main() {
         vscode.ViewColumn.Beside, // 显示在编辑器的哪个部位
         {
             enableScripts: true, // 启用JS，默认禁用
-            retainContextWhenHidden: false, // webview被隐藏时保持状态，避免被重置
+            retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
         },
     )
     panel.webview.html = html

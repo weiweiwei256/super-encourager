@@ -78,26 +78,6 @@ function activate(context) {
                 console.error('err', err)
             })
     })
-    let switchKeyword = vscode.commands.registerCommand('superencourager.switchKeyword', () => {
-        let select = getKeywords()
-        vscode.window
-            .showQuickPick(select)
-            .then(data => {
-                if (data === undefined) {
-                    return
-                }
-                setSettings('keyword', data)
-                    .then(() => {
-                        vscode.window.showInformationMessage(`切换关键词 ${data} 成功！`)
-                    })
-                    .then(undefined, err => {
-                        console.error('err', err)
-                    })
-            })
-            .then(undefined, err => {
-                console.error('err', err)
-            })
-    })
     let clearImage = vscode.commands.registerCommand('superencourager.clearImage', () => {
         let keywords = getKeywords()
         keywords = keywords.filter(item => item != MY_LOVE)
@@ -134,7 +114,6 @@ function activate(context) {
 
     context.subscriptions.push(call)
     context.subscriptions.push(setKeyword)
-    context.subscriptions.push(switchKeyword)
     context.subscriptions.push(clearImage)
     context.subscriptions.push(showPath)
 }
