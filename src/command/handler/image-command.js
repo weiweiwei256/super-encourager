@@ -5,8 +5,8 @@
  */
 const vscode = require('vscode')
 const path = require('path')
-const { getSettings, getExtensionPath, GIF_SUFFIX, log, MY_LOVE } = require('../global/util.js')
-const { saveImage, findImage, checkLocalImage } = require('../global/images.js')
+const { getSettings, getExtensionPath, GIF_SUFFIX, log, MY_LOVE } = require('../../global/util.js')
+const { saveImage, findImage, checkLocalImage } = require('../../global/images.js')
 async function handle() {
     let result = {}
     // 对我的最爱进行特殊处理

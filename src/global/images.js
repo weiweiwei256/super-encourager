@@ -125,13 +125,21 @@ function saveImage(key, localImage = []) {
             })
     })
 }
+
+/**
+ *
+ * 
+ * @param {*} name 文件路径获得文件夹路径  都会删除
+ * @param {boolean} [inner=false] 关键字  自动获取关键字对应文件夹并删除
+ * @returns
+ */
 function delImages(name, inner = false) {
     let imagePath = name
     if (!inner) {
         imagePath = path.join(getImageRootPath(), name)
     }
     if (!fs.existsSync(imagePath)) {
-        log('路径不存在')
+        log('路径不存在:'+imagePath)
         return '路径不存在'
     }
     let info = fs.statSync(imagePath)
@@ -160,9 +168,8 @@ function delImages(name, inner = false) {
  * @param {*} sourceImage 源文件
  * @param {*} targetFolder  目标文件夹路径
  */
-function cloneImage(sourceImage, targetFolder) {
+function cloneImage(sourcePath, targetFolder) {
     // 校验
-    let sourcePath = path.join(getImageRootPath(), sourceImage)
     if (!fs.existsSync(sourcePath)) {
         log(`图片:${sourcePath} 不存在`)
         return
@@ -171,7 +178,7 @@ function cloneImage(sourceImage, targetFolder) {
     if (!fs.existsSync(targetPath)) {
         fs.mkdirSync(targetPath)
     }
-    fs.writeFileSync(path.join(targetPath, path.basename(sourceImage)), fs.readFileSync(sourcePath))
+    fs.writeFileSync(path.join(targetPath, path.basename(sourcePath)), fs.readFileSync(sourcePath))
 }
 
 /**

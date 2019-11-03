@@ -37,7 +37,7 @@
             "properties": {
                 "superencourager.keyword": {
                     "type": "string",
-                    "default": "石原里美",
+                    "default": "石原里美 邓紫棋 新垣结衣 ⭐我的最爱",
                     "scope": "application",
                     "description": "搜索图片关键字"
                 },
