@@ -1,29 +1,15 @@
 const vscode = require('vscode')
 const fs = require('fs')
 const path = require('path')
-const {getSettings, getExtensionPath, GIF_SUFFIX, log } = require('./global/util.js')
+const { getSettings, getExtensionPath, GIF_SUFFIX, log, MY_LOVE } = require('./global/util.js')
 const { saveImage, checkLocalImage } = require('./global/images.js')
 const { commandHandler } = require('./commands/command-handler.js')
 let stateBar = undefined
-const MY_LOVE = '⭐我的最爱'
-
-function showEncourager(imageNames) {
+function main() {
     log('展示鼓励页...')
-    if (imageNames.length === 0) {
-        return
-    }
-    let i = Math.floor(Math.random(20180804) * imageNames.length)
-    let name = imageNames[i]
-    let folderName = getSettings('keyword')
-    if (getSettings('isGif')) {
-        folderName += GIF_SUFFIX
-    }
-    let imagePath = `../../images/${folderName}/${name}` //这个路径是相对于index.html的位置
-    // const resourcePath = path.join(getExtensionPath(), '/src/template/index.html')
     const resourcePath = path.join(getExtensionPath(), '/src/vue-template/index.html')
     const dirPath = path.dirname(resourcePath)
     let html = fs.readFileSync(resourcePath, 'utf-8')
-    html = html.replace('$image_path$', imagePath)
     // vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
     html = html.replace(/(<link.+?href="|<img.+?src="|<script.+?src=")(.+?)"/g, (m, $1, $2) => {
         let result =
@@ -45,10 +31,10 @@ function showEncourager(imageNames) {
     )
     panel.webview.html = html
     panel.webview.onDidReceiveMessage(
-        message => {
+        async message => {
             log('后台接收消息:' + JSON.stringify(message))
-            let sendPkg = commandHandler.handleCommand(message)
-            log('后台发送消息:'+JSON.stringify(sendPkg))
+            let sendPkg = await commandHandler.handleCommand(message)
+            log('后台发送消息:' + JSON.stringify(sendPkg))
             panel.webview.postMessage(sendPkg)
 
             // switch (message.command) {
@@ -91,29 +77,6 @@ function showEncourager(imageNames) {
         setTimeout(() => {
             panel.dispose()
         }, timeLast * 1000)
-    }
-}
-function main() {
-    // 对我的最爱进行特殊处理
-    let localImages = checkLocalImage()
-    if (getSettings('keyword') === MY_LOVE) {
-        showEncourager(localImages)
-        return
-    }
-    if (localImages.length === 0) {
-        saveImage()
-            .then(newImages => {
-                if (newImages.length === 0) {
-                    vscode.window.showErrorMessage('无法获取相关图片，请更改关键字')
-                }
-                showEncourager(newImages)
-            })
-            .then(undefined, err => {
-                console.error('err', err)
-            })
-    } else {
-        saveImage(localImages)
-        showEncourager(localImages)
     }
 }
 exports.main = main

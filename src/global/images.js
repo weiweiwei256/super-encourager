@@ -6,26 +6,50 @@ const path = require('path')
 const vscode = require('vscode')
 const axios = require('axios')
 const syncRequest = require('sync-request')
-const { getSettings, uncompile, getImagePath, getImageRootPath, log } = require('./util.js')
-function checkLocalImage() {
-    const localKeywordPath = getImagePath()
+const { getSettings, getExtensionPath, log } = require('./util.js')
+const GIF_SUFFIX = '_GIF'
+/**
+ *获取extension 中 imagesPath 以 '/' 结尾
+ *
+ * @returns
+ */
+function getImageRootPath() {
+    return path.join(getExtensionPath(), '/images/')
+}
+/**
+ *
+ * 处理判断是否是动图的情况
+ *
+ * @returns
+ */
+function getImagePath(key) {
+    if (!getSettings('isGif')) {
+        return getImageRootPath() + key
+    } else {
+        return getImageRootPath() + key + GIF_SUFFIX
+    }
+}
+/**
+ *根据关键字读取本地图片 如果不存在则返回空数组
+ *
+ * @param {*} key
+ * @returns
+ */
+function checkLocalImage(key) {
+    const localKeywordPath = getImagePath(key)
     if (!fs.existsSync(localKeywordPath)) {
         if (!getSettings('isGif')) {
-            vscode.window.showInformationMessage(
-                `本地不存在${getSettings('keyword')}相关图片,正在通过网络获取...`,
-            )
+            vscode.window.showInformationMessage(`本地不存在${key}相关图片,正在通过网络获取...`)
         } else {
-            vscode.window.showInformationMessage(
-                `本地不存在${getSettings('keyword')}相关动图,正在通过网络获取...`,
-            )
+            vscode.window.showInformationMessage(`本地不存在${key}相关动图,正在通过网络获取...`)
         }
         return []
     }
     let imageNames = fs.readdirSync(localKeywordPath)
     return imageNames
 }
-function syncGetImageUrl(offset) {
-    let keyword = encodeURI(getSettings('keyword'))
+function syncGetImageUrl(key, offset) {
+    let keyword = encodeURI(key)
     let lm = getSettings('isGif') ? 6 : 1
     let hd = getSettings('isGif') ? 0 : 1
     // 控制下载数量
@@ -57,23 +81,23 @@ function syncGetImageUrl(offset) {
         if (item.fromPageTitleEnc) {
             imageUrl.push({
                 url: uncompile(item.objURL),
-                name: `${getSettings('keyword')}_${offset + index}.${item.type}`,
+                name: `${key}_${offset + index}.${item.type}`,
             })
         }
     })
     return imageUrl
 }
 
-function saveImage(localIamge = []) {
+function saveImage(key, localImage = []) {
     return new Promise((resolve, reject) => {
-        if (localIamge.length >= parseInt(getSettings('maxImageNum'))) {
+        if (localImage.length >= parseInt(getSettings('maxImageNum'))) {
             log('已达到最大图片数量，不再更新获取新的图片！')
-            resolve(localIamge)
+            resolve(localImage)
             return
         }
-        let imageUrl = syncGetImageUrl(localIamge.length)
-        log('下载:' + getSettings('keyword') + ' 相关图片')
-        let imagePath = getImagePath()
+        let imageUrl = syncGetImageUrl(key, localImage.length)
+        log('获取关键字:' + key + ' 相关图片的链接完成')
+        let imagePath = getImagePath(key)
         if (!fs.existsSync(imagePath)) {
             fs.mkdirSync(imagePath)
         }
@@ -86,17 +110,17 @@ function saveImage(localIamge = []) {
                         log('保存图片：' + imagePath + '/' + item.name)
                         fs.writeFileSync(imagePath + '/' + item.name, data.data)
                     })
-                    .then(undefined, err => {
+                    .catch(err => {
                         console.error('err', err)
                     }),
             )
         })
         Promise.all(requestImage)
             .then(() => {
-                log('下载完所有图片')
+                log('下载图片完成')
                 resolve(imageUrl.map(item => item.name))
             })
-            .then(undefined, err => {
+            .catch(err => {
                 console.error('err', err)
             })
     })
@@ -170,6 +194,58 @@ function findImage(folder, name) {
         return true
     }
 }
+function uncompile(r) {
+    const n = /(_z2C\$q|_z&e3B|AzdH3F)/g
+    const t = /([a-w\d])/g
+    const e = {
+        w: 'a',
+        k: 'b',
+        v: 'c',
+        1: 'd',
+        j: 'e',
+        u: 'f',
+        2: 'g',
+        i: 'h',
+        t: 'i',
+        3: 'j',
+        h: 'k',
+        s: 'l',
+        4: 'm',
+        g: 'n',
+        5: 'o',
+        r: 'p',
+        q: 'q',
+        6: 'r',
+        f: 's',
+        p: 't',
+        7: 'u',
+        e: 'v',
+        o: 'w',
+        8: '1',
+        d: '2',
+        n: '3',
+        9: '4',
+        c: '5',
+        m: '6',
+        0: '7',
+        b: '8',
+        l: '9',
+        a: '0',
+        _z2C$q: ':',
+        '_z&e3B': '.',
+        AzdH3F: '/',
+    }
+    let o = r.replace(n, function(t, n) {
+        return e[n]
+    })
+    return o.replace(t, function(t, n) {
+        return e[n]
+    })
+}
+exports.getImageRootPath = getImageRootPath
+exports.getImagePath = getImagePath
+exports.GIF_SUFFIX = GIF_SUFFIX
+exports.uncompile = uncompile
 exports.findImage = findImage
 exports.checkLocalImage = checkLocalImage
 exports.syncGetImageUrl = syncGetImageUrl

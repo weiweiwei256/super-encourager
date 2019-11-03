@@ -4,18 +4,17 @@ const {
     setContext,
     getSettings,
     setSettings,
-    GIF_SUFFIX,
     getImageRootPath,
     getKeywords,
     log,
+    MY_LOVE
 } = require('./global/util.js')
 const { initContext } = require('./global/global-state.js')
-const { delImages } = require('./global/images.js')
+const { delImages,GIF_SUFFIX } = require('./global/images.js')
 const { main } = require('./encourager.js')
 let timeMeter = null // 计时器
 let stateBar = undefined
 const ALL_KEYWORD = '**全部**'
-const MY_LOVE = '⭐我的最爱'
 function activate(context) {
     log('super encourager is starting!')
     setContext(context)
