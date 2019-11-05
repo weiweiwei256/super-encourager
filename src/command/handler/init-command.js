@@ -1,7 +1,10 @@
-const { getConfiguration } = require('../../global/util.js')
+const { getConfiguration, getExtensionPath } = require('../../global/util.js')
 const { getGlobalState } = require('../../global/global-state.js')
 exports.handle = function(value) {
     let config = getConfiguration()
     let globalState = getGlobalState()
-    return { config, globalState }
+    let extra = {
+        rootPath: getExtensionPath(),
+    }
+    return { config, extra, globalState }
 }

@@ -5,6 +5,7 @@ const imageCommand = require('./handler/image-command.js')
 const changeIamgeCollectCommand = require('./handler/change-image-collect-command.js')
 const stopCloseCommand = require('./handler/stop-close-command.js')
 const updateConfigCommand = require('./handler/update-config-command.js')
+const saveFileCommand = require('./handler/save-file-command.js')
 const commandHandler = {
     handleCommand: async function(cmd) {
         let { cmdKey, msgCode, value } = cmd
@@ -27,6 +28,9 @@ const commandHandler = {
                 break
             case cmds.UPDATE_WEB_CONFIG:
                 result = await updateConfigCommand.handle(value)
+                break
+            case cmds.SAVE_FILE:
+                result = await saveFileCommand.handle(value)
                 break
             default:
                 console.error('unknown cmd key:' + cmdKey)
