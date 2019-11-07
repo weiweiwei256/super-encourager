@@ -1,0 +1,52 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
+
+canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+footer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  left: 0;
+  padding: 10px 10px;
+  text-align: right;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  display: inline-block;
+  margin-left: 2px;
+  padding: 2px 4px;
+  color: #343436;
+  text-decoration: none;
+  background-color: #fcd000;
+  border-radius: 4px;
+  opacity: 1;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+}
+a:hover {
+  opacity: 0.6;
+}

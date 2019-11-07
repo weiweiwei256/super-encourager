@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>基于HTML5 WebGL的3D星云动画特效DEMO演示</title>
+  <meta charset="utf-8">
+<meta name="description" content="WebGL galaxy with shaders" />
+  
+  
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  
+<script id='vShader' type='x-vertex/x-shader'>
+			  uniform float size;
+  uniform float t;
+  uniform float z;
+  uniform float pixelRatio;
+  
+  varying vec3 vPosition;
+  varying vec3 mPosition;//modified position
+  varying float gas;
+  
+  float a,b=0.;
+  
+  void main(){
+  
+    vPosition=position;
+    
+    a=length(position);
+    if(t>0.)b=max(0.,(cos(a/20.-t*.02)-.99)*3./a);
+    if(z>0.)b=max(0.,cos(a/40.-z*.01+2.));
+    mPosition=position*(1.+b*4.);
+    vec4 mvPosition=modelViewMatrix*vec4(mPosition,1.);
+    gl_Position=mvPosition*projectionMatrix;
+    
+    gas=max(.0,sin(-a/20.));
+    gl_PointSize=pixelRatio*size*(1.+gas*2.)/length(mvPosition.xyz);
+  
+  }
+		</script>
+		<script id='fShader' type='x-fragment/x-shader'>
+  uniform float z;
+      
+  varying vec3 vPosition;
+  varying vec3 mPosition;
+  varying float gas;
+      
+  void main(){
+    
+    float a=distance(mPosition,vPosition);
+    if(a>0.)a=1.;
+    
+    float b=max(.32,.0065*length(vPosition));
+      
+    float c=distance(gl_PointCoord,vec2(.5));
+    float starlook=-(c-.5)*1.2*gas; 
+    float gaslook=(1.-gas)/(c*10.);
+    float texture=starlook+gaslook;
+               
+    gl_FragColor=vec4(.32,.28,b,1.)*texture*(1.-a*.35);
+    if(z>0.)gl_FragColor*=cos(1.57*z/322.)*(1.-.001*length(mPosition));
+      
+  }
+		</script>
+      
+
+
+<button  style='position:absolute;width:100%;text-align:center;border-radius:5px;right:10px;font-family:Arial;color:#33c;outline:none;background:none;border:none;text-decoration:underline;font-size:16px;cursor:pointer;'></button>
+
+<div style="text-align:center;clear:both">
+<script src="/gg_bd_ad_720x90.js" type="text/javascript"></script>
+<script src="/follow.js" type="text/javascript"></script>
+</div>
+
+<!-- webglstats.com-->
+<script src="js/stat.js" defer="defer" async="async"></script>
+  <script src='../../lib/three.min.js'></script>
+<script src='js/TweenMax.min.js'></script>
+
+    <script  src="js/index.js"></script>
+
+</body>
+</html>

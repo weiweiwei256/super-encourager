@@ -37,30 +37,6 @@ function main() {
             let sendPkg = await commandHandler.handleCommand(message)
             log('后台发送消息:' + JSON.stringify(sendPkg))
             panel.webview.postMessage(sendPkg)
-
-            // switch (message.command) {
-            //     case types.COMMANDS.INIT_GLOBAL_STATE:
-            //         // 局部变量
-            //         let currentState = {
-            //             [types.CURRENT.CURRENT_COLLECT_STATE]: findImage(MY_LOVE, name),
-            //         }
-            //         panel.webview.postMessage({
-            //             command: types.COMMANDS.INIT_GLOBAL_STATE,
-            //             value: { globalState: getGlobalState(context), currentState },
-            //         })
-            //         break
-            //     case types.COMMANDS.UPDATE_GLOBAL_STATE:
-            //         setGlobalState(context, message.value)
-            //         break
-            //     case types.COMMANDS.UPDATE_COLLECT_STATE:
-            //         if (message.value) {
-            //             cloneImage(`${folderName}/${name}`, MY_LOVE)
-            //         } else {
-            //             delImages(path.join(MY_LOVE, name))
-            //         }
-            //         break
-            //     default:
-            // }
         },
         undefined,
         context.subscriptions,

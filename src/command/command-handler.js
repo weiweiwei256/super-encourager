@@ -1,36 +1,40 @@
 const cmds = require('./cmd-constant.js')
-const testCommand = require('./handler/test-command.js')
-const initCommand = require('./handler/init-command.js')
-const imageCommand = require('./handler/image-command.js')
-const changeIamgeCollectCommand = require('./handler/change-image-collect-command.js')
-const stopCloseCommand = require('./handler/stop-close-command.js')
-const updateConfigCommand = require('./handler/update-config-command.js')
-const saveFileCommand = require('./handler/save-file-command.js')
+const testCmd = require('./handler/test-command.js')
+const initCmd = require('./handler/init-command.js')
+const imageCmd = require('./handler/image-command.js')
+const changeIamgeCollectCmd = require('./handler/change-image-collect-command.js')
+const stopCloseCmd = require('./handler/stop-close-command.js')
+const updateConfigCmd = require('./handler/update-config-command.js')
+const saveFileCmd = require('./handler/save-file-command.js')
+const callEntertainmentCmd = require('./handler/call-entertainment-command.js')
 const commandHandler = {
     handleCommand: async function(cmd) {
         let { cmdKey, msgCode, value } = cmd
         let result
         switch (cmdKey) {
             case cmds.INIT:
-                result = initCommand.handle(value)
+                result = initCmd.handle(value)
                 break
             case cmds.TEST:
-                result = testCommand.handle(value)
+                result = testCmd.handle(value)
                 break
             case cmds.ENCOURAGER_IMAGE:
-                result = await imageCommand.handle(value)
+                result = await imageCmd.handle(value)
                 break
             case cmds.ENCOURAGER_CHANGE_IMAGE_COLLECT:
-                result = await changeIamgeCollectCommand.handle(value)
+                result = await changeIamgeCollectCmd.handle(value)
                 break
             case cmds.STOP_CLOSE:
-                result = await stopCloseCommand.handle(value)
+                result = await stopCloseCmd.handle(value)
                 break
             case cmds.UPDATE_WEB_CONFIG:
-                result = await updateConfigCommand.handle(value)
+                result = await updateConfigCmd.handle(value)
                 break
             case cmds.SAVE_FILE:
-                result = await saveFileCommand.handle(value)
+                result = await saveFileCmd.handle(value)
+                break
+            case cmds.CALL_ENTERAINMENT:
+                result = await callEntertainmentCmd.handle(value)
                 break
             default:
                 console.error('unknown cmd key:' + cmdKey)
