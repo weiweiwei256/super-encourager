@@ -6,6 +6,22 @@
 
 源码地址:[https://github.com/weiweiwei256/super-encourager](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE) 记得star :P
 
+## 基于Vue的全新vscode 插件"超级鼓励师"正式上线了
+### vue源码仓库:https://github.com/weiweiwei256/super-encourager-vue
+-  新增功能:
+	-  常见API: MDN,前端模块,后端模块,各种手册,工具推荐
+	-  常见工具: 二维码生成器,日期时间戳转化,字符串处理
+	-  娱乐放松: 小游戏,搞破坏,发发呆
+	-  设置页: 暂时仅支持设置一言请求类型.
+- 功能优化:
+	- 右上角提示鼓励师关闭时间,任意点击后会终止自动关闭.
+	- 多关键字设置: 
+	  不再支持单一关键字设置,而采用空格分隔多个关键字<br>
+    例如:"石原里美 邓紫棋 新垣结衣 ⭐我的最爱"<br> 
+    插件会从多个关键字中随机选择关键字,获取美图展示.
+  - 除切换关键字命令
+  - 支持点击获取下一张美图.
+
 ## 使用方法
 
 -   召唤鼓励师的几种方式：
@@ -48,8 +64,7 @@
 
 -   super.call:召唤超级鼓励师
 -   super.set:设置搜索关键字
--   super.switch:切换关键字
--   super.clear:删除关键字
+-   super.clear:删除关键字的图片
 -   super.showPath:查看图片本地路径
 
 ### For more information
