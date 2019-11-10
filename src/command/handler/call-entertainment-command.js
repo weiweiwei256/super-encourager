@@ -9,7 +9,10 @@ const fs = require('fs')
 const { getExtensionPath, log } = require('../../global/util.js')
 exports.handle = function({ type, name }) {
     log(`展示娱乐页:${type}${name}`)
-    const resourcePath = path.join(getExtensionPath(), '/resources/entertainment/game/car/index.html')
+    const resourcePath = path.join(
+        getExtensionPath(),
+        `/resources/entertainment/${type}/${name}/index.html`,
+    )
     const dirPath = path.dirname(resourcePath)
     let html = fs.readFileSync(resourcePath, 'utf-8')
     // vscode不支持直接加载本地资源，需要替换成其专有路径格式，这里只是简单的将样式和JS的路径替换
@@ -24,7 +27,7 @@ exports.handle = function({ type, name }) {
     })
     const panel = vscode.window.createWebviewPanel(
         'super-encourager', // viewType
-        'car', // 视图标题
+        name, // 视图标题
         vscode.ViewColumn.Active, // 显示在编辑器的哪个部位
         {
             enableScripts: true, // 启用JS，默认禁用
