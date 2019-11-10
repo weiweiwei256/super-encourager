@@ -22,7 +22,7 @@
         "鼓励",
         "encourage"
     ],
-    "version": "2.0.1",
+    "version": "2.0.2",
     "engines": {
         "vscode": "^1.35.0"
     },
