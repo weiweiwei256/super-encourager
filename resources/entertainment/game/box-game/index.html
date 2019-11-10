@@ -18,12 +18,12 @@ body{
 </head>
 <body onkeydown="doKeyDown(event)"><!--身体-->
 	<div class="game">
-		<canvas id="canvas" width="560" height="560"></canvas>
 		<div id="msg"></div>
 		<input type="button" value="上一关" onClick="NextLevel(-1)">
 		<input type="button" value="下一关" onClick="NextLevel(1)">
 		<input type="button" value="重玩本关" onClick="NextLevel(0)">
 		<input type="button" value="游戏说明" onClick="showHelp()">
+		<canvas id="canvas" width="560" height="560"></canvas>
 	</div>
 
 <script src="js/mapdata100.js"></script>
