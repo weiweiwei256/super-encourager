@@ -20,11 +20,7 @@ function setPageState(page, key, value) {
 }
 function getGlobalState() {
     // TEST:
-    // removeGlobalState('encourage')
-    //  数据兼容
-    if (this.context.globalState.get('hitokoto_type')) {
-        defaultState.encourage.hitokoto_type = this.context.globalState.get('hitokoto_type')
-    }
+    // 不再数据向前兼容
     // 默认配置原有配置混合
     let currentState = this.context.globalState._value || {}
     currentState = deepObjectMerge(defaultState, currentState)

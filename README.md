@@ -87,4 +87,7 @@
 -  [Elisony](https://github.com/Elisony) 
     - [issues#2](https://github.com/weiweiwei256/super-encourager/issues/2)
 
+-  [SSF](https://github.com/SSFsystem) 多关键字配置建议
+    - [issues#4](https://github.com/weiweiwei256/super-encourager/issues/4)
+
 **Enjoy!**
