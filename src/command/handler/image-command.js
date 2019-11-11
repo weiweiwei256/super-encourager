@@ -18,9 +18,13 @@ async function handle() {
     let activeKey = keys[Math.floor(Math.random(20191103) * keys.length)]
     log('当前获取的关键字:' + activeKey)
     let localImages = checkLocalImage(activeKey)
-    if (localImages.length === 0 && activeKey === MY_LOVE) {
-        vscode.window.showErrorMessage(`请先收藏图片到“${MY_LOVE}”！`)
-        return {}
+    if (activeKey === MY_LOVE) {
+        if (localImages.length === 0) {
+            vscode.window.showErrorMessage(`请先收藏图片到“${MY_LOVE}”！`)
+            return {}
+        } else {
+            result.imageUrl = getVscodeImagePath(activeKey, localImages)
+        }
     } else if (localImages.length === 0) {
         log('关键字:' + activeKey + '不存在本地图片，正在通过网络获取')
         let newImages = await saveImage(activeKey)

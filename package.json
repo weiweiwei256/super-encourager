@@ -10,6 +10,11 @@
         "type": "git",
         "url": "https://github.com/weiweiwei256/super-encourager"
     },
+    "scripts": {
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test",
+        "pub": "vsce publish patch"
+    },
     "homepage": "https://github.com/weiweiwei256/super-encourager/blob/master/README.md",
     "categories": [
         "Other"
@@ -37,7 +42,7 @@
             "properties": {
                 "superencourager.keyword": {
                     "type": "string",
-                    "default": "石原里美 邓紫棋 新垣结衣 ⭐我的最爱",
+                    "default": "石原里美 绿色森林 新垣结衣 ⭐我的最爱",
                     "scope": "application",
                     "description": "搜索图片关键字"
                 },
@@ -135,11 +140,6 @@
                 }
             ]
         }
-    },
-    "scripts": {
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test",
-        "pub": "vsce publish patch"
     },
     "devDependencies": {
         "@types/mocha": "^2.2.42",
