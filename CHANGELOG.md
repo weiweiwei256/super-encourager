@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.0.14
+
+-	紧急修复,clear命令和showPath命令无法调用问题
+-   修复当切换鼓励方式后,之前的计时器未能完全销毁问题
+
 ## 3.0.9
   ### 基于Vue的全新vscode 插件"超级鼓励师"正式上线了
   vue源码仓库:https://github.com/weiweiwei256/super-encourager-vue

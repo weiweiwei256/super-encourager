@@ -12,7 +12,7 @@ const {
 } = require('./global/util.js')
 const { delImages } = require('./global/images.js')
 const { initContext } = require('./global/global-state.js')
-let { initBar,getStateBar } = require('./state-bar.js')
+let { initBar, getStateBar } = require('./state-bar.js')
 const { main } = require('./encourager.js')
 let timeMeter = null // 计时器
 const ALL_KEYWORD = '**全部**'
@@ -22,37 +22,34 @@ function activate(context) {
     initContext(context)
     initBar()
     initTimer()
+    // 增加属性修改监听
+    vscode.workspace.onDidChangeConfiguration(function(event) {
+        Promise.resolve(event.affectsConfiguration('superencourager.type'))
+            .then(data => {
+                if (data) {
+                    //true 代表这个属性已经被修改
+                    initTimer()
+                }
+            })
+            .then(undefined, err => {
+                console.error('err', err)
+            })
+    })
+    vscode.workspace.onDidChangeConfiguration(function(event) {
+        Promise.resolve(event.affectsConfiguration('superencourager.timeInterval'))
+            .then(data => {
+                if (data) {
+                    //true 代表这个属性已经被修改
+                    initTimer()
+                }
+            })
+            .then(undefined, err => {
+                console.error('err', err)
+            })
+    })
     let call = vscode.commands.registerCommand('superencourager.call', () => {
         try {
             main()
-            initTimer()
-            // 注入当插件属性值被修改后的即使更新回调
-            vscode.workspace.onDidChangeConfiguration(function(event) {
-                Promise.resolve(event.affectsConfiguration('superencourager.type'))
-                    .then(data => {
-                        if (data) {
-                            //true 代表这个属性已经被修改
-                            timeMeter = undefined
-                            initTimer()
-                        }
-                    })
-                    .then(undefined, err => {
-                        console.error('err', err)
-                    })
-            })
-            vscode.workspace.onDidChangeConfiguration(function(event) {
-                Promise.resolve(event.affectsConfiguration('superencourager.timeInterval'))
-                    .then(data => {
-                        if (data) {
-                            //true 代表这个属性已经被修改
-                            timeMeter = undefined
-                            initTimer()
-                        }
-                    })
-                    .then(undefined, err => {
-                        console.error('err', err)
-                    })
-            })
         } catch (e) {
             console.error(e)
         }
@@ -120,7 +117,12 @@ function activate(context) {
 }
 
 function initTimer() {
-    if (!timeMeter) {
+    // 如果已有计时器则重新设置
+    if (timeMeter) {
+        timeMeter.stop()
+        log('当前倒计时已销毁')
+        timeMeter = undefined;
+    }
         let timeSetting = '*/10 * * * * *' // 每5秒执行一次 用于测试
         if (getSettings('type') === 'time-interval') {
             timeSetting = '00 */' + getSettings('timeInterval') + ' * * * *'
@@ -148,8 +150,7 @@ function initTimer() {
             null,
             true,
         )
-        log('timer init')
-    }
+        log('计时器初始化完成')
 }
 
 exports.activate = activate

@@ -44,25 +44,13 @@
                     "type": "string",
                     "default": "石原里美 绿色森林 新垣结衣 ⭐我的最爱",
                     "scope": "application",
-                    "description": "搜索图片关键字"
-                },
-                "superencourager.needTip": {
-                    "type": "boolean",
-                    "default": false,
-                    "scope": "application",
-                    "description": "是否在召唤之前显示召唤提示"
+                    "description": "搜索图片关键字",
                 },
                 "superencourager.timeLast": {
                     "type": "number",
-                    "default": "10",
+                    "default": "20",
                     "scope": "application",
                     "description": "鼓励持续时间，单位:秒。 设置为0 则不自动关闭"
-                },
-                "superencourager.timeInterval": {
-                    "type": "number",
-                    "default": "30",
-                    "scope": "application",
-                    "description": "鼓励时间间隔，单位分钟。需要：鼓励方式为：time-interval时，生效"
                 },
                 "superencourager.type": {
                     "type": "string",
@@ -79,6 +67,18 @@
                     "default": "natural-hour",
                     "scope": "application",
                     "description": "鼓励方式: 特定时间间隔、整点鼓励、半点鼓励。"
+                },
+                "superencourager.timeInterval": {
+                    "type": "number",
+                    "default": "30",
+                    "scope": "application",
+                    "description": "鼓励时间间隔，单位分钟。需要：鼓励方式为：time-interval时，生效"
+                },
+                "superencourager.needTip": {
+                    "type": "boolean",
+                    "default": false,
+                    "scope": "application",
+                    "description": "是否在召唤之前显示召唤提示"
                 },
                 "superencourager.isGif": {
                     "type": "boolean",
