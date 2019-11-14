@@ -6,9 +6,9 @@
 const path = require('path')
 const fs = require('fs')
 const vscode = require('vscode')
+const GIF_SUFFIX = '_GIF'
 let out = null // 终端输出对象
 let context = undefined
-
 function setContext(context) {
     this.context = context
 }
@@ -27,7 +27,14 @@ function setSettings(key, value) {
 function getExtensionPath() {
     return vscode.extensions.getExtension('runnerup.super-encourager').extensionPath
 }
-
+/**
+ *获取extension 中 imagesPath 以 '/' 结尾
+ *
+ * @returns
+ */
+function getImageRootPath() {
+    return path.join(getExtensionPath(), '/images/')
+}
 function log(msg) {
     if (!out) {
         out = vscode.window.createOutputChannel('super encourager')
@@ -68,12 +75,14 @@ function deepObjectMerge(FirstOBJ, SecondOBJ) {
     return FirstOBJ
 }
 exports.MY_LOVE = '⭐我的最爱'
+exports.GIF_SUFFIX = GIF_SUFFIX
 exports.setContext = setContext
 exports.getContext = getContext
 exports.getConfiguration = getConfiguration
 exports.getSettings = getSettings
 exports.setSettings = setSettings
 exports.getExtensionPath = getExtensionPath
+exports.getImageRootPath = getImageRootPath
 exports.log = log
 exports.getKeywords = getKeywords
 exports.deepObjectMerge = deepObjectMerge

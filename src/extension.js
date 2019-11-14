@@ -4,16 +4,17 @@ const {
     setContext,
     getSettings,
     setSettings,
-    getImageRootPath,
     getKeywords,
+    getImageRootPath,
     log,
-    MY_LOVE
+    MY_LOVE,
+    GIF_SUFFIX,
 } = require('./global/util.js')
+const { delImages } = require('./global/images.js')
 const { initContext } = require('./global/global-state.js')
-const { delImages,GIF_SUFFIX } = require('./global/images.js')
+let { initBar,getStateBar } = require('./state-bar.js')
 const { main } = require('./encourager.js')
 let timeMeter = null // 计时器
-let stateBar = undefined
 const ALL_KEYWORD = '**全部**'
 function activate(context) {
     log('super encourager is starting!')
@@ -85,7 +86,7 @@ function activate(context) {
         vscode.window
             .showQuickPick(keywords)
             .then(
-                data => {
+                function(data) {
                     log(data)
                     if (data === undefined) {
                         return
@@ -118,13 +119,6 @@ function activate(context) {
     context.subscriptions.push(showPath)
 }
 
-function initBar() {
-    stateBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0)
-    stateBar.command = 'superencourager.call'
-    stateBar.text = '召唤鼓励师'
-    stateBar.tooltip = '召唤超级鼓励师'
-    stateBar.show()
-}
 function initTimer() {
     if (!timeMeter) {
         let timeSetting = '*/10 * * * * *' // 每5秒执行一次 用于测试
@@ -138,7 +132,7 @@ function initTimer() {
         timeMeter = new CronJob(
             timeSetting,
             function() {
-                stateBar.text = '召唤鼓励师(已就绪)'
+                getStateBar().text = '召唤鼓励师(已就绪)'
                 if (getSettings('needTip')) {
                     vscode.window
                         .showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤')

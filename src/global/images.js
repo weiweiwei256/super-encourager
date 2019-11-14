@@ -6,16 +6,8 @@ const path = require('path')
 const vscode = require('vscode')
 const axios = require('axios')
 const syncRequest = require('sync-request')
-const { getSettings, getExtensionPath, log } = require('./util.js')
-const GIF_SUFFIX = '_GIF'
-/**
- *获取extension 中 imagesPath 以 '/' 结尾
- *
- * @returns
- */
-function getImageRootPath() {
-    return path.join(getExtensionPath(), '/images/')
-}
+let { getSettings,getImageRootPath, log,GIF_SUFFIX } = require('./util.js')
+
 /**
  *
  * 处理判断是否是动图的情况
@@ -134,6 +126,7 @@ function saveImage(key, localImage = []) {
  * @returns
  */
 function delImages(name, inner = false) {
+    console.log(getSettings())
     let imagePath = name
     if (!inner) {
         imagePath = path.join(getImageRootPath(), name)
@@ -249,9 +242,7 @@ function uncompile(r) {
         return e[n]
     })
 }
-exports.getImageRootPath = getImageRootPath
 exports.getImagePath = getImagePath
-exports.GIF_SUFFIX = GIF_SUFFIX
 exports.uncompile = uncompile
 exports.findImage = findImage
 exports.checkLocalImage = checkLocalImage

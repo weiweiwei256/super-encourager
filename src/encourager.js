@@ -1,11 +1,10 @@
 const vscode = require('vscode')
 const fs = require('fs')
 const path = require('path')
-const { getSettings, getExtensionPath, GIF_SUFFIX, log, MY_LOVE } = require('./global/util.js')
-const { saveImage, checkLocalImage } = require('./global/images.js')
+const { getSettings, getExtensionPath, log } = require('./global/util.js')
 const { commandHandler } = require('./command/command-handler.js')
-let stateBar = undefined
 let closeCounter = undefined
+let { getStateBar } = require('./state-bar.js')
 function main() {
     log('展示鼓励页...')
     const resourcePath = path.join(getExtensionPath(), '/src/vue-template/index.html')
@@ -43,9 +42,9 @@ function main() {
     )
     panel.onDidDispose(function() {
         log('鼓励师已销毁')
-        stateBar.text = '超级鼓励师感谢您的使用！'
+        getStateBar().text = '超级鼓励师感谢您的使用！'
         setTimeout(() => {
-            stateBar.text = '召唤鼓励师'
+            getStateBar().text = '召唤鼓励师'
         }, 5000)
     })
     let timeLast = parseInt(getSettings('timeLast'))
