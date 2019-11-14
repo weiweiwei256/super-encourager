@@ -27,7 +27,7 @@
         "鼓励",
         "encourage"
     ],
-    "version": "3.0.13",
+    "version": "3.0.14",
     "engines": {
         "vscode": "^1.35.0"
     },
@@ -44,7 +44,7 @@
                     "type": "string",
                     "default": "石原里美 绿色森林 新垣结衣 ⭐我的最爱",
                     "scope": "application",
-                    "description": "搜索图片关键字",
+                    "description": "搜索图片关键字"
                 },
                 "superencourager.timeLast": {
                     "type": "number",
