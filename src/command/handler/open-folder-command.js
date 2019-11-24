@@ -5,6 +5,7 @@
  */
 const { getExtensionPath } = require('../../global/util.js')
 const vscode = require('vscode')
+const path = require('path')
 exports.handle = function(arg) {
     let { subpath } = arg
     let rootUri = vscode.Uri.parse(

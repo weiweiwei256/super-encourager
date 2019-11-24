@@ -7,6 +7,7 @@ const stopCloseCmd = require('./handler/stop-close-command.js')
 const updateConfigCmd = require('./handler/update-config-command.js')
 const saveFileCmd = require('./handler/save-file-command.js')
 const callEntertainmentCmd = require('./handler/call-entertainment-command.js')
+const openDialogCmd = require('./handler/open-folder-command.js')
 const commandHandler = {
     handleCommand: async function(cmd) {
         let { cmdKey, msgCode, value } = cmd
@@ -35,6 +36,9 @@ const commandHandler = {
                 break
             case cmds.CALL_ENTERAINMENT:
                 result = await callEntertainmentCmd.handle(value)
+                break
+            case cmds.OPEN_DIALOG:
+                result = await openDialogCmd.handle(value)
                 break
             default:
                 console.error('unknown cmd key:' + cmdKey)

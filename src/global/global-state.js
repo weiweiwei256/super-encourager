@@ -1,5 +1,8 @@
 let context = undefined
 let defaultState = {
+    common: {
+        hasActiveDriver: false,
+    },
     encourager: {
         hitokoto_type: '',
     },

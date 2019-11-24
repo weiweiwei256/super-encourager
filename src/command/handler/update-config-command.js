@@ -3,32 +3,26 @@
  * @Date: 2019-11-02 22:00:51
  * @Description:
  */
-const vscode = require('vscode')
-const { updateGlobalState, updateConfig } = require('../../global/global-state.js')
-const { getConfiguration } = require('../../global/utils.js')
+const { updateGlobalState } = require('../../global/global-state.js')
+const { setSettings, getSettings, log } = require('../../global/util.js')
 // scope constant
 const GLOBAL_STATE = 'globalState'
 const CONFIG = 'config'
 
-function updateConfig(key, value) {
-    getConfiguration.update(key, value).then(data => {
-        console.log(data)
-    })
-}
-
 exports.handle = function(arg) {
-    let { page, key, value } = arg
     let { scope, key, value, sub } = arg
-    console.log(scope)
-    console.log(key)
-    console.log(value)
-    console.log(sub)
     if (scope === GLOBAL_STATE) {
         updateGlobalState(sub, key, value)
+        log(`修改属性 scope:${scope},key:${key} to value:${value} sub:${sub}成功`)
     } else if (scope === CONFIG) {
-        updateConfig(key, value)
+        if (getSettings(key) !== value) {
+            setSettings(key, value)
+            log(`修改属性 scope:${scope},key:${key} to value:${value} sub:${sub}成功`)
+        } else {
+            log('属性值未发生改变无需设置')
+        }
     }
     return {
-        msg: `修改page:${page} key:${key} to value:${value}成功`,
+        msg: `修改属性key:${key} to value:${value}成功`,
     }
 }
