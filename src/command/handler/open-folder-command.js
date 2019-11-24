@@ -3,14 +3,14 @@
  * @Date: 2019-11-02 22:00:51
  * @Description:
  */
-const { getExtensionPath } = require('../../global/util.js')
+const { getGlobalStoragePath } = require('../../global/util.js')
 const vscode = require('vscode')
 const path = require('path')
 exports.handle = function(arg) {
     let { subpath } = arg
     let rootUri = vscode.Uri.parse(
         path.join(
-            getExtensionPath(),
+            getGlobalStoragePath(),
             subpath !== undefined || subpath !== '' ? `/${subpath}/` : '',
         ),
     )

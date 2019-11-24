@@ -5,12 +5,12 @@
  */
 const fs = require('fs')
 const path = require('path')
-const { getExtensionPath } = require('../../global/util.js')
+const { getGlobalStoragePath } = require('../../global/util.js')
 exports.handle = function(arg) {
     let { saveData, fileName } = arg
     let base64Data = saveData.replace(/^data:image\/\w+;base64,/, '')
     let dataBuffer = new Buffer(base64Data, 'base64')
-    let savePath = path.join(getExtensionPath(), '/user-resources/')
+    let savePath = path.join(getGlobalStoragePath(), '/resources/')
     if (!fs.existsSync(savePath)) {
         fs.mkdirSync(savePath)
     }

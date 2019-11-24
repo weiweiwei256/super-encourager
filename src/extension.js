@@ -1,10 +1,13 @@
 const vscode = require('vscode')
+const fs = require('fs')
+const path = require('path')
 const CronJob = require('cron').CronJob
 const {
     setContext,
     getSettings,
     setSettings,
     getKeywords,
+    getGlobalStoragePath,
     getImageRootPath,
     log,
     MY_LOVE,
@@ -20,6 +23,7 @@ function activate(context) {
     log('super encourager is starting!')
     setContext(context)
     initContext(context)
+    initGlobalStoragePath()
     initBar()
     initTimer()
     // 增加属性修改监听
@@ -121,38 +125,51 @@ function initTimer() {
     if (timeMeter) {
         timeMeter.stop()
         log('当前倒计时已销毁')
-        timeMeter = undefined;
+        timeMeter = undefined
     }
-        let timeSetting = '*/10 * * * * *' // 每5秒执行一次 用于测试
-        if (getSettings('type') === 'time-interval') {
-            timeSetting = '00 */' + getSettings('timeInterval') + ' * * * *'
-        } else if (getSettings('type') === 'natural-hour') {
-            timeSetting = '00 00 * * * *'
-        } else if (getSettings('type') === 'natural-half-hour') {
-            timeSetting = '00 00,30 * * * *'
-        }
-        timeMeter = new CronJob(
-            timeSetting,
-            function() {
-                getStateBar().text = '召唤鼓励师(已就绪)'
-                if (getSettings('needTip')) {
-                    vscode.window
-                        .showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤')
-                        .then(data => {
-                            if (data) {
-                                main()
-                            }
-                        })
-                } else {
-                    main()
-                }
-            },
-            null,
-            true,
-        )
-        log('计时器初始化完成')
+    let timeSetting = '*/10 * * * * *' // 每5秒执行一次 用于测试
+    if (getSettings('type') === 'time-interval') {
+        timeSetting = '00 */' + getSettings('timeInterval') + ' * * * *'
+    } else if (getSettings('type') === 'natural-hour') {
+        timeSetting = '00 00 * * * *'
+    } else if (getSettings('type') === 'natural-half-hour') {
+        timeSetting = '00 00,30 * * * *'
+    }
+    timeMeter = new CronJob(
+        timeSetting,
+        function() {
+            getStateBar().text = '召唤鼓励师(已就绪)'
+            if (getSettings('needTip')) {
+                vscode.window
+                    .showInformationMessage('超级鼓励师已就绪，等待您的召唤', '召唤')
+                    .then(data => {
+                        if (data) {
+                            main()
+                        }
+                    })
+            } else {
+                main()
+            }
+        },
+        null,
+        true,
+    )
+    log('计时器初始化完成')
 }
-
+function initGlobalStoragePath() {
+    // 检测公共资源目录是否已经存在 如果不存在就创建
+    let globalStoragePath = getGlobalStoragePath()
+    if (!fs.existsSync(globalStoragePath)) {
+        fs.mkdirSync(globalStoragePath)
+    }
+    let forderName = ['images', 'resources']
+    forderName.forEach(name => {
+        let checkPath = path.join(globalStoragePath, `/${name}/`)
+        if (!fs.existsSync(checkPath)) {
+            fs.mkdirSync(checkPath)
+        }
+    })
+}
 exports.activate = activate
 
 exports.deactivate = function() {}

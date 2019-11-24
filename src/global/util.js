@@ -27,13 +27,17 @@ function setSettings(key, value) {
 function getExtensionPath() {
     return vscode.extensions.getExtension('runnerup.super-encourager').extensionPath
 }
+
+function getGlobalStoragePath() { 
+    return getContext().globalStoragePath
+}
 /**
  *获取extension 中 imagesPath 以 '/' 结尾
  *
  * @returns
  */
 function getImageRootPath() {
-    return path.join(getExtensionPath(), '/images/')
+    return path.join(getGlobalStoragePath(), '/images/')
 }
 function log(msg) {
     if (!out) {
@@ -82,6 +86,7 @@ exports.getConfiguration = getConfiguration
 exports.getSettings = getSettings
 exports.setSettings = setSettings
 exports.getExtensionPath = getExtensionPath
+exports.getGlobalStoragePath = getGlobalStoragePath
 exports.getImageRootPath = getImageRootPath
 exports.log = log
 exports.getKeywords = getKeywords

@@ -5,7 +5,15 @@
  */
 const vscode = require('vscode')
 const path = require('path')
-const { getSettings, getExtensionPath, GIF_SUFFIX, log, MY_LOVE } = require('../../global/util.js')
+const fs = require('fs')
+const {
+    getSettings,
+    getExtensionPath,
+    getGlobalStoragePath,
+    GIF_SUFFIX,
+    log,
+    MY_LOVE,
+} = require('../../global/util.js')
 const { saveImage, findImage, checkLocalImage } = require('../../global/images.js')
 async function handle() {
     let result = {}
@@ -46,10 +54,23 @@ function getVscodeImagePath(key, imageNames) {
     if (getSettings('isGif')) {
         folderName += GIF_SUFFIX
     }
-    let imagePath = `../../images/${folderName}/${name}` //这个路径是相对于index.html的位置
+    let realImagePath = `${getGlobalStoragePath()}/images/${folderName}/${name}`
+    let imagePath = `../../images/${folderName}` //这个路径是相对于index.html的位置
     const resourcePath = path.join(getExtensionPath(), '/src/vue-template/index.html')
     const dirPath = path.dirname(resourcePath)
-    let vscodeImagePath = vscode.Uri.file(path.resolve(dirPath, imagePath))
+    let cacheFolderPath = path.resolve(dirPath, imagePath)
+    let cacheImagePath = cacheFolderPath + `/${name}`
+    if (!fs.existsSync(cacheFolderPath)) {
+        fs.mkdirSync(cacheFolderPath)
+    }
+    if (!fs.existsSync(cacheImagePath)) {
+        fs.writeFileSync(
+            path.join(cacheFolderPath, path.basename(realImagePath)),
+            fs.readFileSync(realImagePath),
+        )
+        console.log('cache success')
+    }
+    let vscodeImagePath = vscode.Uri.file(cacheImagePath)
         .with({ scheme: 'vscode-resource' })
         .toString()
     log('后台获取到的图片路径:' + vscodeImagePath)

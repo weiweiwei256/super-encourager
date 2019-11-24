@@ -49,6 +49,8 @@ exports.setState = setState
 exports.getGlobalState = getGlobalState
 exports.updateGlobalState = updateGlobalState
 exports.removeGlobalState = removeGlobalState
+
+// FIX ME: 通过getContext方式获取 会更优雅
 exports.initContext = function(context) {
     this.context = context
 }

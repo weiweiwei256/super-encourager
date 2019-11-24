@@ -27,6 +27,7 @@ function main() {
         {
             enableScripts: true, // 启用JS，默认禁用
             retainContextWhenHidden: true, // webview被隐藏时保持状态，避免被重置
+            enableCommandUris: true,
         },
     )
     panel.webview.html = html
