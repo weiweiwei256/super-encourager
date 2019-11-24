@@ -10,6 +10,7 @@
       "name": "启动扩展",
       "runtimeExecutable": "${execPath}",
       "args": [
+        "--enable-proposed-api",
         "--extensionDevelopmentPath=${workspaceFolder}"
       ],
       "outFiles": [

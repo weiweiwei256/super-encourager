@@ -11,7 +11,7 @@ exports.handle = function({ type, name }) {
     log(`展示娱乐页:${type}${name}`)
     const resourcePath = path.join(
         getExtensionPath(),
-        `/resources/entertainment/${type}/${name}/index.html`,
+        `/src/resources/entertainment/${type}/${name}/index.html`,
     )
     const dirPath = path.dirname(resourcePath)
     let html = fs.readFileSync(resourcePath, 'utf-8')

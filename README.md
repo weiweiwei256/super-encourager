@@ -1,26 +1,22 @@
 # 超级鼓励师 README
 
-基于百度搜索定制您的私人鼓励师,希望能为努力工作的您带来鼓励和温暖!
+这里有美图，名言，方便开发的小工具，常见API还有各种娱乐项目等你来体验,希望能为努力工作的您带来鼓励和帮助!
 
 开源,公益,不易，您的建议是我前进的动力。
 
-源码地址:[https://github.com/weiweiwei256/super-encourager](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE) 记得star :P
+源码地址:[https://github.com/weiweiwei256/super-encourager](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE) 记得 star :P
 
-## 基于Vue的全新vscode 插件"超级鼓励师"正式上线了
-### vue源码仓库:https://github.com/weiweiwei256/super-encourager-vue
--  新增功能:
-	-  常见API: MDN,前端模块,后端模块,各种手册,工具推荐
-	-  常见工具: 二维码生成器,日期时间戳转化,字符串处理
-	-  娱乐放松: 小游戏,搞破坏,发发呆
-	-  设置页: 暂时仅支持设置一言请求类型.
-- 功能优化:
-	- 右上角提示鼓励师关闭时间,任意点击后会终止自动关闭.
-	- 多关键字设置: 
-	  不再支持单一关键字设置,而采用空格分隔多个关键字<br>
-    例如:"石原里美 邓紫棋 新垣结衣 ⭐我的最爱"<br> 
+## 基于 Vue 的全新 vscode 插件"超级鼓励师"正式上线了
+
+### vue 源码仓库:https://github.com/weiweiwei256/super-encourager-vue
+
+-   新增功能: - 常见 API: MDN,前端模块,后端模块,各种手册,工具推荐 - 常见工具: 二维码生成器,日期时间戳转化,字符串处理 - 娱乐放松: 小游戏,搞破坏,发发呆 - 设置页: 暂时仅支持设置一言请求类型.
+-   功能优化: - 右上角提示鼓励师关闭时间,任意点击后会终止自动关闭. - 多关键字设置:
+    不再支持单一关键字设置,而采用空格分隔多个关键字<br>
+    例如:"石原里美 邓紫棋 新垣结衣 ⭐ 我的最爱"<br>
     插件会从多个关键字中随机选择关键字,获取美图展示.
-  - 除切换关键字命令
-  - 支持点击获取下一张美图.
+    -   除切换关键字命令
+    -   支持点击获取下一张美图.
 
 ## 使用方法
 
@@ -76,18 +72,20 @@
 -   [简书:基于百度图片搜索的 vscode 插件——超级鼓励师](https://www.jianshu.com/p/ae750a86eaf8)
 
 #### 鸣谢意见建议
--  [v1.hitokoto.cn](v1.hitokoto.cn) 提供的一言API
 
--  [liguobao](https://github.com/liguobao) 
+-   [v1.hitokoto.cn](v1.hitokoto.cn) 提供的一言 API
 
-    - [issues#3](https://github.com/weiweiwei256/super-encourager/issues/3)
+-   [liguobao](https://github.com/liguobao)
 
-    - 建议使用一言API
+    -   [issues#3](https://github.com/weiweiwei256/super-encourager/issues/3)
 
--  [Elisony](https://github.com/Elisony) 
-    - [issues#2](https://github.com/weiweiwei256/super-encourager/issues/2)
+    -   建议使用一言 API
 
--  [SSF](https://github.com/SSFsystem) 多关键字配置建议
-    - [issues#4](https://github.com/weiweiwei256/super-encourager/issues/4)
+-   [Elisony](https://github.com/Elisony)
+
+    -   [issues#2](https://github.com/weiweiwei256/super-encourager/issues/2)
+
+-   [SSF](https://github.com/SSFsystem) 多关键字配置建议
+    -   [issues#4](https://github.com/weiweiwei256/super-encourager/issues/4)
 
 **Enjoy!**

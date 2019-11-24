@@ -6,18 +6,19 @@ let defaultState = {
 }
 const { deepObjectMerge, log } = require('./util.js')
 
-function setGlobalState(newGlobalState) {
+function saveGlobalState(newGlobalState) {
     for (var i in newGlobalState) {
         if (this.context.globalState.get(i) !== newGlobalState[i]) {
             this.context.globalState.update(i, newGlobalState[i])
         }
     }
 }
-function setPageState(page, key, value) {
+function updateGlobalState(page, key, value) {
     let pageData = this.context.globalState.get(page)
     pageData[key] = value
     this.context.globalState.update(page, pageData)
 }
+
 function getGlobalState() {
     // TEST:
     // 不再数据向前兼容
@@ -25,7 +26,7 @@ function getGlobalState() {
     let currentState = this.context.globalState._value || {}
     currentState = deepObjectMerge(defaultState, currentState)
     // 更新配置
-    setGlobalState(currentState)
+    saveGlobalState(currentState)
     // 设置默认值
     return currentState
 }
@@ -43,8 +44,7 @@ function setState(key, value) {
 exports.getState = getState
 exports.setState = setState
 exports.getGlobalState = getGlobalState
-exports.setGlobalState = setGlobalState
-exports.setPageState = setPageState
+exports.updateGlobalState = updateGlobalState
 exports.removeGlobalState = removeGlobalState
 exports.initContext = function(context) {
     this.context = context

@@ -4,7 +4,7 @@
     "description": "这里有美图，名言，方便开发的小工具，常见API还有各种娱乐项目等你来体验,奖励下努力工作的您！",
     "author": "yajun wei",
     "publisher": "runnerup",
-    "icon": "resources/super-encourager.png",
+    "icon": "src/resources/super-encourager.png",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -99,8 +99,8 @@
                 "command": "superencourager.call",
                 "title": "super.call:召唤鼓励师",
                 "icon": {
-                    "light": "./resources/call-light.png",
-                    "dark": "./resources/call-dark.png"
+                    "light": "./src/resources/call-light.png",
+                    "dark": "./src/resources/call-dark.png"
                 }
             },
             {
