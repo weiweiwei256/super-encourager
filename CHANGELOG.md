@@ -1,5 +1,11 @@
 # Change Log
 
+## 3.1.2
+-  修复默认展示test页的bug
+-  bug:处理无法二次查看资源目录 bug
+-  常见API页新增vant,octotree,Git Graph
+-  常见API页新增搜索功能
+
 ## 3.1.1
 -  新增功能向导
 -  新增关于页

@@ -14,6 +14,7 @@ exports.ENCOURAGER_CHANGE_IMAGE_COLLECT = 'super/command/encourager_change_image
 
 // tools
 exports.SAVE_FILE = 'super/command/saveFile'
+exports.GET_DEFAULT_IMAGE = 'super/command/getDefaultImage'
 
 // entertainment
 exports.CALL_ENTERAINMENT = 'super/command/callEntertainment'

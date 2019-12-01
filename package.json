@@ -42,7 +42,7 @@
             "properties": {
                 "superencourager.keyword": {
                     "type": "string",
-                    "default": "石原里美 绿色森林 新垣结衣 ⭐我的最爱",
+                    "default": "石原里美 刘亦菲 古力娜扎 高圆圆 赵奕欢 江疏影 郑爽 范冰冰 新垣结衣 ⭐我的最爱",
                     "scope": "application",
                     "description": "搜索图片关键字"
                 },
