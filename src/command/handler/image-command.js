@@ -48,7 +48,7 @@ async function handle() {
     return result
 }
 function getVscodeImagePath(key, imageNames) {
-    let i = Math.floor(Math.random(20190804) * imageNames.length)
+    let i = Math.floor(Math.random(Date.now()) * imageNames.length)
     let name = imageNames[i]
     let folderName = key
     if (getSettings('isGif')) {
