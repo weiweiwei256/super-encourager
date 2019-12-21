@@ -8,7 +8,6 @@ let defaultState = {
     },
 }
 const { deepObjectMerge, log } = require('./util.js')
-
 function saveGlobalState(newGlobalState) {
     for (var i in newGlobalState) {
         if (this.context.globalState.get(i) !== newGlobalState[i]) {
