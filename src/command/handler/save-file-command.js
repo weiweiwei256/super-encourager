@@ -9,7 +9,7 @@ const { getGlobalStoragePath } = require('../../global/util.js')
 exports.handle = function(arg) {
     let { saveData, fileName } = arg
     let base64Data = saveData.replace(/^data:image\/\w+;base64,/, '')
-    let dataBuffer = new Buffer(base64Data, 'base64')
+    let dataBuffer = Buffer.alloc(base64Data, 'base64')
     let savePath = path.join(getGlobalStoragePath(), '/resources/')
     if (!fs.existsSync(savePath)) {
         fs.mkdirSync(savePath)
