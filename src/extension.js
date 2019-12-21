@@ -7,6 +7,7 @@ const {
     getSettings,
     setSettings,
     getKeywords,
+    getExtensionPath,
     getGlobalStoragePath,
     getImageRootPath,
     log,
@@ -162,13 +163,18 @@ function initGlobalStoragePath() {
     if (!fs.existsSync(globalStoragePath)) {
         fs.mkdirSync(globalStoragePath)
     }
-    let forderName = ['images', 'resources']
+    let forderName = ['images',`images/${MY_LOVE}`, 'resources']
     forderName.forEach(name => {
         let checkPath = path.join(globalStoragePath, `/${name}/`)
         if (!fs.existsSync(checkPath)) {
             fs.mkdirSync(checkPath)
         }
     })
+    // 默认收藏第一张图到我的最爱
+    let sourcePath = path.join(getExtensionPath(), '/src/resources/super-encourager.png')
+    let targetPath = path.join(globalStoragePath, `images/${MY_LOVE}`)
+    fs.writeFileSync(path.join(targetPath, path.basename(sourcePath)), fs.readFileSync(sourcePath))
+
 }
 exports.activate = activate
 

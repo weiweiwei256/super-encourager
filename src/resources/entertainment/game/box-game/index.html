@@ -25,7 +25,9 @@
 		<input type="button" value="上一关" onClick="NextLevel(-1)">
 		<input type="button" value="下一关" onClick="NextLevel(1)">
 		<input type="button" value="重玩本关" onClick="NextLevel(0)">
-		<input type="button" value="游戏说明" onClick="showHelp()">
+		<p>tips:用键盘上的上、下、左、右键移动小人，把箱子全部推到小球的位置即可过关。箱子只可向前推，不能往后拉，并且小人一次只能推动一个箱子。<br>按键‘r’快速重玩本关</p>
+		<input id='levelValue' type="number" max="99" min='0' placeholder="请选择1~99关" style='width:100px'>
+		<button onClick="selectLevel()">确定</button>
 		<canvas id="canvas" width="560" height="560"></canvas>
 	</div>
 	<div style='visibility: hidden'>
@@ -104,7 +106,6 @@
 
 	//绘制每个游戏关卡地图
 	function DrawMap(level) {
-		console.log(perPosition)
 		for (var i = 0; i < level.length; i++) {
 			for (var j = 0; j < level[i].length; j++) {
 				var pic = block;//初始图片
@@ -145,6 +146,26 @@
 	function NextLevel(i) {
 		//iCurlevel当前的地图关数
 		iCurlevel = iCurlevel + i;
+		if (iCurlevel < 0) {
+			iCurlevel = 0;
+			return;
+		}
+		var len = levels.length;
+		if (iCurlevel > len - 1) {
+			iCurlevel = len - 1;
+		}
+		initLevel();//初始当前等级关卡
+		moveTimes = 0;//游戏关卡移动步数清零
+		showMoveInfo();//初始化当前关卡数据
+	}
+	//下一关
+	function selectLevel() {
+		let newLevel = document.getElementById('levelValue').value
+		if (!newLevel) {
+			return;
+		}
+		console.log(newLevel)
+		iCurlevel = parseInt(newLevel - 1);
 		if (iCurlevel < 0) {
 			iCurlevel = 0;
 			return;
@@ -261,6 +282,9 @@
 			case 40://下箭头
 				go("down");
 				break;
+			case 82://下箭头
+				NextLevel(0)
+				break;
 		}
 
 	}
@@ -268,17 +292,6 @@
 	function showMoveInfo() {
 		msg.innerHTML = "第" + (iCurlevel + 1) + "关 移动次数: " + moveTimes;
 	}
-	//游戏说明
-	var showhelp = false;
-	function showHelp() {
-		showhelp = !showhelp;
-		if (showhelp) {
-			msg.innerHTML = "用键盘上的上、下、左、右键移动小人，把箱子全部推到小球的位置即可过关。箱子只可向前推，不能往后拉，并且小人一次只能推动一个箱子。";
-		} else {
-			showMoveInfo();
-		}
-	}
-
 	//克隆二维数组
 	function copyArray(arr) {
 		var b = [];//每次移动更新地图数据都先清空再添加新的地图
