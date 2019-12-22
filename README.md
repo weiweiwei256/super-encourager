@@ -1,12 +1,27 @@
 # 超级鼓励师 README
 
-这里有美图，名言，方便开发的小工具，常见API还有各种娱乐项目等你来体验,希望能为努力工作的您带来鼓励和帮助!
+这里有美图、名言、方便开发的小工具、常见API、优质博客项目推荐还有各种娱乐项目等你来体验,希望能为努力工作的您带来鼓励和帮助!
 
 开源,公益,不易，觉得不错记得回来点颗星并分享给你的好友，您的建议是我前进的动力。
 
 源码地址:[https://github.com/weiweiwei256/super-encourager](https://github.com/weiweiwei256/super-encourager/labels/%E6%84%8F%E8%A7%81%E5%BB%BA%E8%AE%AE) 
 
 web渲染端vue源码仓库:[https://github.com/weiweiwei256/super-encourager-vue](https://github.com/weiweiwei256/super-encourager-vue)
+
+博客/项目推荐地址:[http://39.105.32.133/public/backstage/index.html](http://39.105.32.133/public/backstage/index.html)
+
+## 亮点
+
+-   实时更新的博客/项目推荐页
+-   可视化配置
+-   基于百度图片搜索，根据用户设置的关键字（可配置多个）进行个性化搜索，您的最爱在等你。
+-   支持收藏功能，动手网罗天下美图吧！
+-   游戏，破坏，发呆娱乐体验
+-   常见api推荐
+-   提供常见工具
+-   一言精选功能 
+-   不仅支持特定时间间隔召唤，还支持自然时间（半点，整点）召唤。
+-   支持百度动图搜索
 
 ## 使用方法
 
@@ -16,18 +31,6 @@ web渲染端vue源码仓库:[https://github.com/weiweiwei256/super-encourager-vu
     -   通过文件右键菜单‘super.call:召唤超级鼓励师’
     -   F1 进入命令选择，激活命令：super.call:召唤鼓励师
     -   热键Ctrl/Cmd+F1
-
-## 亮点
-
--   基于百度图片搜索，根据用户设置的关键字（可配置多个）进行个性化搜索，您的最爱在等你。
--   支持收藏功能，动手网罗天下美图吧！
--   游戏，破坏，发呆娱乐体验
--   常见api推荐
--   提供常见工具
--   一言精选功能 
--   不仅支持特定时间间隔召唤，还支持自然时间（半点，整点）召唤。
--   可视化配置
--   支持百度动图搜索
 
 ## 依赖
 

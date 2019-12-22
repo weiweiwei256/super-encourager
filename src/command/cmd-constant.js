@@ -8,6 +8,7 @@ exports.INIT = 'super/command/init'
 
 exports.UPDATE_WEB_CONFIG = 'super/command/updateWebConfig'
 exports.OPEN_DIALOG = 'super/command/openDialog'
+exports.PROXY_COMMUNICATION = 'super/command/proxy_communication'
 // encoureager page
 exports.ENCOURAGER_IMAGE = 'super/command/encourager_image'
 exports.ENCOURAGER_CHANGE_IMAGE_COLLECT = 'super/command/encourager_change_image_collect'
