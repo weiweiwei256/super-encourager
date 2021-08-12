@@ -71,7 +71,7 @@ function getVscodeImagePath(key, imageNames) {
         console.log('cache success')
     }
     let vscodeImagePath = vscode.Uri.file(cacheImagePath)
-        .with({ scheme: 'vscode-resource' })
+        .with({ scheme: 'vscode-file' })
         .toString()
     log('后台获取到的图片路径:' + vscodeImagePath)
     return vscodeImagePath

@@ -18,7 +18,7 @@ exports.handle = function(value) {
     } else {
         // 收藏
         imageUrl = decodeURI(imageUrl)
-        imageUrl = imageUrl.substring('vscode-resource:'.length)
+        imageUrl = imageUrl.substring('vscode-file:'.length)
         cloneImage(imageUrl, MY_LOVE)
         return {
             msg: '收藏成功',

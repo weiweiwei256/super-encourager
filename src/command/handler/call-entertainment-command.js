@@ -20,7 +20,7 @@ exports.handle = function({ type, name }) {
         let result =
             $1 +
             vscode.Uri.file(path.resolve(dirPath, $2))
-                .with({ scheme: 'vscode-resource' })
+                .with({ scheme: 'vscode-file' })
                 .toString() +
             '"'
         return result

@@ -114,7 +114,6 @@ function activate(context) {
     let showPath = vscode.commands.registerCommand('superencourager.showPath', () => {
         vscode.window.showInformationMessage('超级鼓励师本地资源路径：' + getImageRootPath())
     })
-
     context.subscriptions.push(call)
     context.subscriptions.push(setKeyword)
     context.subscriptions.push(clearImage)
